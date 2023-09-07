@@ -1,14 +1,24 @@
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
-import java.security.DigestInputStream;
+import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import javax.management.RuntimeErrorException;
-
 public class Blob {
-    public static String getSHA1(File file) throws IOException {
+    private String SHA1;
+    File originalFile;
+    String path;
+
+    public Blob(String filePathString) throws IOException {
+        originalFile = new File(filePathString);
+        path = filePathString;
+        SHA1 = getSHA1(originalFile);
+    }
+
+    public String getSHA1(File file) throws IOException {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA1");
             FileInputStream fis = new FileInputStream(file);
@@ -25,20 +35,33 @@ public class Blob {
         }
     }
 
-    private static String bytesToHex(byte[] bytes) {
+    private String bytesToHex(byte[] bytes) {
         StringBuilder hex = new StringBuilder();
         for (byte b : bytes)
             hex.append(String.format("%02x", b));
         return hex.toString();
     }
 
-    public static void writeNewFile() {
+    public void writeNewFile() throws IOException {
+        // convert original file to String A
+        // convert string A to new file with name SHA1
+        BufferedReader reader = new BufferedReader(new FileReader(path));
+        StringBuilder string = new StringBuilder();
+        while (reader.ready()) {
+            string.append((char) reader.read());
+        }
+        reader.close();
+        String a = string.toString();
+        File copy = new File("");
+        PrintWriter pw = new PrintWriter(copy);
+        pw.write(a);
+        pw.close();
         // write a new file to disk inside an 'object class'
         // new file name is the SHA1, file contains the same content as original
     }
 
-    public static String getSHA1Code() {
-        return null;
+    public String getSHA1Code() throws IOException {
+        return SHA1;
     }
 
 }
