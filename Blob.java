@@ -1,20 +1,23 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Blob {
     private String SHA1;
     File originalFile;
-    String path;
+    String originalPath;
+    // HashMap<>;
 
     public Blob(String filePathString) throws IOException {
         originalFile = new File(filePathString);
-        path = filePathString;
+        originalPath = filePathString;
         SHA1 = getSHA1(originalFile);
     }
 
@@ -42,25 +45,31 @@ public class Blob {
         return hex.toString();
     }
 
-    public void writeNewFile() throws IOException {
+    public void add(String newPath) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(originalPath));
+        StringBuilder string = new StringBuilder();
         // convert original file to String A
         // convert string A to new file with name SHA1
-        BufferedReader reader = new BufferedReader(new FileReader(path));
-        StringBuilder string = new StringBuilder();
         while (reader.ready()) {
             string.append((char) reader.read());
         }
         reader.close();
         String a = string.toString();
-        File copy = new File("");
-        PrintWriter pw = new PrintWriter(copy);
-        pw.write(a);
-        pw.close();
         // write a new file to disk inside an 'object class'
-        // new file name is the SHA1, file contains the same content as original
+        File copy = new File(newPath + SHA1); // new file name is the SHA1,
+        PrintWriter pw = new PrintWriter(copy);
+        pw.write(a); // file contains the same content as original
+
+        pw.close();
+    }
+
+    public void remove(String path) throws IOException {
+        Files.deleteIfExists(path);
+
     }
 
     public String getSHA1Code() throws IOException {
+        System.out.println(SHA1);
         return SHA1;
     }
 
