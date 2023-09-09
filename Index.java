@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Set;
@@ -13,9 +14,14 @@ public class Index {
     HashMap<String, String> gitMap = new HashMap<String, String>();
     String objectPath;
 
-    public void initializeProject() {
-        objectPath = "./gitBuild/Objects";
-        index = new File(objectPath + "/index");
+    public void initializeProject() throws IOException {
+        objectPath = "./objects/";
+        Path oP = Paths.get(objectPath);
+        if (!Files.exists(oP))
+            Files.createDirectories(oP);
+        Path iP = Paths.get(objectPath + "index");
+        if (!Files.exists(iP))
+            index = new File(objectPath + "index");
     }
 
     public void addBlob(String filename) throws IOException, NoSuchAlgorithmException {

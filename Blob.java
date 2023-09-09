@@ -21,7 +21,7 @@ public class Blob {
         originalFile = new File(filePathString);
         originalPath = filePathString;
         fileContents = readFile(originalFile);
-        SHA1 = getHash(fileContents);
+        SHA1 = createHash(fileContents);
     }
 
     public String getSHA1() {
@@ -32,7 +32,7 @@ public class Blob {
         writeFile(fileContents, objectPath + SHA1);
     }
 
-    public String getHash(String fileContents) throws NoSuchAlgorithmException {
+    private String createHash(String fileContents) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-1");
         byte[] MessageDigest = md.digest(fileContents.getBytes());
         BigInteger no = new BigInteger(1, MessageDigest);
