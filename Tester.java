@@ -1,10 +1,10 @@
 import java.io.File;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 public class Tester {
-    public static void main(String[] args) throws IOException {
-        System.out.println("hello");
-        FileUtils.getSHA1(new File("/Users/ardendoyle/Documents/personal/coding/Honors Topics/gitBuild/file.txt"));
-        // System.out.println(helena.getSHA1Code() + "fucj");
+    public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
+        Index init = new Index();
+        init.addBlob("/Users/ardendoyle/Documents/personal/coding/Honors Topics/gitBuild/file.txt");
     }
 }

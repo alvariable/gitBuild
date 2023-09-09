@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -39,29 +40,16 @@ public class FileUtils {
         return chars;
     }
 
-    public static String getSHA1(File file) throws IOException {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA1");
-            FileInputStream fis = new FileInputStream(file);
-            byte[] dataBytes = new byte[1024];
-            int n = 0;
-            while (n != fis.read(dataBytes)) {
-                md.update(dataBytes, 0, n);
-            }
-            byte[] mdbytes = md.digest();
-            fis.close();
-            System.out.println(bytesToHex(mdbytes));
-            return bytesToHex(mdbytes);
-        } catch (NoSuchAlgorithmException ex) {
-            throw new RuntimeException(ex);
+    public static String getHash(String fileContents) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-1");
+        byte[] MessageDigest = md.digest(fileContents.getBytes());
+        BigInteger no = new BigInteger(1, MessageDigest);
+        String hashtext = no.toString(16);
+        while (hashtext.length() < 32) {
+            hashtext = "0" + hashtext;
         }
-    }
+        return hashtext;
 
-    private static String bytesToHex(byte[] bytes) {
-        StringBuilder hex = new StringBuilder();
-        for (byte b : bytes)
-            hex.append(String.format("%02x", b));
-        return hex.toString();
     }
 
 }

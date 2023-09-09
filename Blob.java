@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -13,64 +14,53 @@ public class Blob {
     private String SHA1;
     File originalFile;
     String originalPath;
+    String fileContents;
     // HashMap<>;
 
-    public Blob(String filePathString) throws IOException {
+    public Blob(String filePathString) throws IOException, NoSuchAlgorithmException {
         originalFile = new File(filePathString);
         originalPath = filePathString;
-        SHA1 = getSHA1(originalFile);
+        fileContents = readFile(originalFile);
+        SHA1 = getHash(fileContents);
     }
 
-    public String getSHA1(File file) throws IOException {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA1");
-            FileInputStream fis = new FileInputStream(file);
-            byte[] dataBytes = new byte[1024];
-            int n = 0;
-            while (n != fis.read(dataBytes)) {
-                md.update(dataBytes, 0, n);
-            }
-            byte[] mdbytes = md.digest();
-            fis.close();
-            return bytesToHex(mdbytes);
-        } catch (NoSuchAlgorithmException ex) {
-            throw new RuntimeException(ex);
+    public String getSHA1() {
+        return SHA1;
+    }
+
+    public void add(String objectPath) throws FileNotFoundException {
+        writeFile(fileContents, objectPath + SHA1);
+    }
+
+    public String getHash(String fileContents) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-1");
+        byte[] MessageDigest = md.digest(fileContents.getBytes());
+        BigInteger no = new BigInteger(1, MessageDigest);
+        String hashtext = no.toString(16);
+        while (hashtext.length() < 32) {
+            hashtext = "0" + hashtext;
         }
+        return hashtext;
+
     }
 
-    private String bytesToHex(byte[] bytes) {
-        StringBuilder hex = new StringBuilder();
-        for (byte b : bytes)
-            hex.append(String.format("%02x", b));
-        return hex.toString();
-    }
-
-    public void add(String newPath) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(originalPath));
+    private String readFile(File fileName) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(fileName));
         StringBuilder string = new StringBuilder();
-        // convert original file to String A
-        // convert string A to new file with name SHA1
         while (reader.ready()) {
             string.append((char) reader.read());
         }
         reader.close();
-        String a = string.toString();
-        // write a new file to disk inside an 'object class'
-        File copy = new File(newPath + SHA1); // new file name is the SHA1,
-        PrintWriter pw = new PrintWriter(copy);
-        pw.write(a); // file contains the same content as original
+        return string.toString();
+    }
 
+    private void writeFile(String str, String path) throws FileNotFoundException {
+        // creates a file from file path parameter, file name = sha1
+        File file = new File(path);
+        PrintWriter pw = new PrintWriter(file);
+        pw.write(str);
         pw.close();
-    }
 
-    public void remove(String path) throws IOException {
-        Files.deleteIfExists(path);
-
-    }
-
-    public String getSHA1Code() throws IOException {
-        System.out.println(SHA1);
-        return SHA1;
     }
 
 }
