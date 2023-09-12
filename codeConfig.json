@@ -1,0 +1,146 @@
+[
+    {
+        "className": "Index",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "initializeProject",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "addBlob",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "fileName"
+                ]
+            },
+            {
+                "methodName": "removeBlob",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "fileName"
+                ]
+            },
+            {
+                "methodName": "testIndex",
+                "parameters": [],
+                "values": []
+            }
+        ]
+    },
+    {
+        "className": "Blob",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [
+                    "String"
+                ],
+                "values": [
+                    "filePathString"
+                ]
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "getSha1",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "add",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "objectPath"
+                ]
+            },
+            {
+                "methodName": "createHash",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "fileContents"
+                ]
+            },
+            {
+                "methodName": "readFile",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "fileName"
+                ]
+            },
+            {
+                "methodName": "writeFile",
+                "parameters": [
+                    "String",
+                    "String"
+                ],
+                "values": [
+                    "str",
+                    "path"
+                ]
+            }
+        ]
+    },
+    {
+        "className": "FileUtils",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "readFile",
+                "parameters": [
+                    "File"
+                ],
+                "values": [
+                    "fileName"
+                ]
+            },
+            {
+                "methodName": "writeFile",
+                "parameters": [
+                    "String",
+                    "String"
+                ],
+                "values": [
+                    "str",
+                    "path"
+                ]
+            },{
+                "methodName": "countCharacters",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "fileName"
+                ]
+            },{
+                "methodName": "getHash",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "fileContents"
+                ]
+            }
+        ]
+    }
+]
