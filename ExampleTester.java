@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 public class ExampleTester {
 
+    // presumably creates files to test with
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
         /*
@@ -22,6 +23,7 @@ public class ExampleTester {
          */
     }
 
+    // clears out everything post tests
     @AfterAll
     static void tearDownAfterClass() throws Exception {
         /*
