@@ -14,50 +14,35 @@ import java.util.Set;
 
 public class Tree {
 
-    String testFolderPath = ".\\test";
-    String indexPath = ".\\test\\index";
+    String indexPath = "./index";
     File indexFile = new File(indexPath);
 
-    public void add(String str) throws Exception {
+    String hashName;
+    File tree;
+    String treePath;
 
-        int colonCounter = -1; // :D
-        // determine # of ':'
-        int i = 0;
-        while (i >= 0) {
-            colonCounter++;
-            i = str.indexOf(':', i);
+    // create file for tree
+    public Tree() throws Exception {
+        tree = new File("Tree");
+        if (!tree.exists()) {
+            tree.createNewFile();
         }
-        // throw error if improper # of ':'
-        if (colonCounter >= 3)
-            throw new Exception("Bruh invalid input");
-
-        // add
-        FileWriter fw = new FileWriter(new File(indexPath));
-
-        fw.append(str);
+        treePath = tree.getPath();
     }
 
-    // // what to do if 0 colon found
-    // private void noColon(String str) {
+    public void add(String str) throws Exception { // adds this to THE TREE FILE outside objects folder
 
-    // }
+        // if last no newline
 
-    // // what to do if 1 colon found
-    // private void oneColon(String str) {
+        FileWriter fw = new FileWriter(tree);
 
-    // }
+        // check if file empty
+        if (tree.length() == 0)
+            fw.append(str);
+        else
+            fw.append("\n" + str);
 
-    // // what to do if 2 colon found
-    // private void twoColon(String str) {
-
-    // }
-
-    public void remove(String str) throws Exception {
-
-    }
-
-    public void write() {
-
+        fw.close();
     }
 
 }
