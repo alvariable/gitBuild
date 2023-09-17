@@ -45,4 +45,42 @@ public class Tree {
         fw.close();
     }
 
+    public void remove(String str) throws Exception { // removes this from THE TREE FILE
+
+        BufferedReader bf = new BufferedReader(new FileReader(tree));
+        StringBuilder text = new StringBuilder();
+
+        // this will be put into new index file
+
+        // locate
+        while (bf.ready()) {
+            // System.out.println("ready");
+            String line = bf.readLine();
+            // System.out.println(line.length());
+
+            // locate name
+            int i = line.indexOf(str);
+
+            // builds string to put in new indexfile
+            if (i < 0) {
+                // System.out.println(line.substring(0, index - 1));
+                if (text.length() == 0)
+                    text.append(line);
+                else
+                    text.append("\n" + line);
+            }
+        }
+
+        bf.close();
+
+        tree.delete();
+        tree.createNewFile();
+
+        FileWriter fw = new FileWriter(tree);
+        // System.out.println("write");
+        fw.write(text.toString()); // account for "\n" at end
+
+        fw.close();
+    }
+
 }
