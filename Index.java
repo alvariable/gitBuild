@@ -25,8 +25,10 @@ public class Index {
          * index is not supposed to be inside objects folder
          */
         Path iP = Paths.get("index");
-        if (!Files.exists(iP))
+        if (!Files.exists(iP)) {
             index = new File("index");
+            index.createNewFile();
+        }
     }
 
     public void addBlob(String filename) throws IOException, NoSuchAlgorithmException {

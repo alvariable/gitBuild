@@ -50,16 +50,21 @@ public class ExampleTester {
     @Test
     @DisplayName("[8] Test if initialize and objects are created correctly")
     void testInitialize() throws Exception {
-
         // Run the person's code
         // TestHelper.runTestSuiteMethods("testInitialize");
 
-        // check if the file exists
-        File file = new File("index");
-        Path path = Paths.get("objects");
+        indexTest.initializeProject();
+        treeTest.initializeTree();
 
-        assertTrue(file.exists());
-        assertTrue(Files.exists(path));
+        // check if the file exists
+        File indexFile = new File("index");
+
+        Path objPath = Paths.get("objects");
+        File treeFile = new File("Tree");
+
+        assertTrue(indexFile.exists());
+        assertTrue(Files.exists(objPath));
+        assertTrue(treeFile.exists());
     }
 
     @Test
