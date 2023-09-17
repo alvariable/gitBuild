@@ -83,4 +83,27 @@ public class Tree {
         fw.close();
     }
 
+    public void generateBlob() throws Exception { // no delete old blob
+        // String content;
+        BufferedReader bf = new BufferedReader(new FileReader(tree));
+        StringBuilder contents = new StringBuilder();
+        while (bf.ready()) {
+            contents.append((char) bf.read());
+        }
+        bf.close();
+
+        String treeHash = FileUtils.getHash(contents.toString());
+
+        // create new file in objects folder
+        File treeBlob = new File("./objects", treeHash);
+        treeBlob.createNewFile();
+
+        // write into blob
+        FileWriter fw = new FileWriter(treeBlob);
+        fw.write(contents.toString());
+
+        fw.close();
+
+    }
+
 }
