@@ -22,8 +22,12 @@ public class Tree {
     String treePath;
 
     // create file for tree
-    public Tree() throws Exception {
+    public Tree() {
         tree = new File("Tree");
+
+    }
+
+    public void initializeTree() throws Exception {
         if (!tree.exists()) {
             tree.createNewFile();
         }

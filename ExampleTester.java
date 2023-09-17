@@ -13,6 +13,9 @@ import org.junit.jupiter.api.Test;
 
 public class ExampleTester {
 
+    Index indexTest = new Index();
+    Tree treeTest = new Tree();
+
     // presumably creates files to test with
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
@@ -21,6 +24,12 @@ public class ExampleTester {
          * Utils.deleteFile("index");
          * Utils.deleteDirectory("objects");
          */
+
+        // delete all files if still around
+
+        FileUtils.deleteFile("index");
+        FileUtils.deleteDirectory("objects");
+
     }
 
     // clears out everything post tests
@@ -31,6 +40,11 @@ public class ExampleTester {
          * Utils.deleteFile("index");
          * Utils.deleteDirectory("objects");
          */
+
+        // delete all files
+        FileUtils.deleteFile("index");
+        FileUtils.deleteDirectory("objects");
+
     }
 
     @Test

@@ -11,10 +11,12 @@ public class Tester {
 
         // init.removeBlob("file.txt");
 
-        Tree tree = new Tree();
+        // Tree tree = new Tree();
+        // tree.initializeTree();
 
-        tree.add("thing : 2093103821038210");
-        tree.remove("thing : 2093103821038210");
+        // tree.add("thing : 2093103821038210");
+        // // tree.remove("thing : 2093103821038210");
+        // tree.generateBlob();
 
         System.out.println("test done");
     }

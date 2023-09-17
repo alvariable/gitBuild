@@ -1,3 +1,5 @@
+import static org.junit.Assert.fail;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,11 +8,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class FileUtils {
-    public String readFile(File fileName) throws IOException {
+    public static String readFile(File fileName) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(fileName));
         StringBuilder string = new StringBuilder();
         while (reader.ready()) {
@@ -20,7 +25,7 @@ public class FileUtils {
         return string.toString();
     }
 
-    public void writeFile(String str, String path) throws FileNotFoundException {
+    public static void writeFile(String str, String path) throws FileNotFoundException {
         // creates a file from file path parameter
         File file = new File(path);
         PrintWriter pw = new PrintWriter(file);
@@ -50,6 +55,35 @@ public class FileUtils {
         }
         return hashtext;
 
+    }
+
+    public static void deleteFile(String fileName) {
+        File file = new File(fileName);
+        file.delete();
+    }
+
+    public static void deleteDirectory(String dirName) throws Exception {
+
+        // delete directory
+        // Path oP = Paths.get("./" + dirName + "/");
+        File dir = new File(dirName);
+
+        // delete stuff inside
+        String[] entries = dir.list();
+        if (entries != null) {
+            for (String s : entries) {
+                File currentFile = new File(dir.getPath(), s);
+                currentFile.delete();
+            }
+        }
+
+        dir.delete();
+
+    }
+
+    public static void createFile(String fileName) throws Exception {
+        File file = new File(fileName);
+        file.createNewFile();
     }
 
 }
