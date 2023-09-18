@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -28,7 +30,18 @@ public class Blob {
         return SHA1;
     }
 
-    public void add(String objectPath) throws FileNotFoundException {
+    public String getContents() {
+        return fileContents;
+    }
+
+    public void add(String objectPath) throws Exception {
+
+        // makes directory if no exist
+        objectPath = "./objects/";
+        Path oP = Paths.get(objectPath); // creates Path
+        if (!Files.exists(oP)) // creates file if directory doesnt exist
+            Files.createDirectories(oP); // creates Path
+
         writeFile(fileContents, objectPath + SHA1);
     }
 

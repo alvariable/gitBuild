@@ -31,7 +31,7 @@ public class Index {
         }
     }
 
-    public void addBlob(String filename) throws IOException, NoSuchAlgorithmException {
+    public void addBlob(String filename) throws Exception {
         // creates a blob for the given filename
         Blob b = new Blob(filename);
         String hash = b.getSHA1(); // creates hash var that stores SHA1

@@ -4,10 +4,12 @@ import java.security.NoSuchAlgorithmException;
 
 public class Tester {
     public static void main(String[] args) throws Exception, IOException, NoSuchAlgorithmException {
-        Index init = new Index();
-        init.initializeProject();
+        // Index init = new Index();
+        // init.initializeProject();
         // init.addBlob("testFile.txt");
         // init.addBlob("file.txt");
+        Blob blob = new Blob("testFile.txt");
+        blob.add("objects");
 
         // init.removeBlob("file.txt");
 

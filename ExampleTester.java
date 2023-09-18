@@ -13,37 +13,46 @@ import org.junit.jupiter.api.Test;
 
 public class ExampleTester {
 
-    Index indexTest = new Index();
-    Tree treeTest = new Tree();
+    private Index indexTest = new Index();
+    private Tree treeTest = new Tree();
+
+    private static String file1Name = "test";
+    private static String file1Text = "text";
+    private static String file1SHA = "372ea08cab33e71c02c651dbc83a474d32c676ea";
+
+    private static String file2Name = "test2.txt";
+    private static String file2Text = "dsfhaidsfonfongorlgjrwlkfn";
+    private static String file2SHA = "98fa98f725d269076d1af0a978a308b6df672673";
+
+    private static String treeInput = "tree : bd1ccec139dead5ee0d8c3a0499b42a7d43ac44b";
+    private static String treeInput2 = "blob : 98fa98f725d269076d1af0a978a308b6df672673 : test2.txt";
+    private static String treeInput3 = "tree : 372ea08cab33e71c02c651dbc83a474d32c676ea : test";
 
     // presumably creates files to test with
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
-        /*
-         * Utils.writeStringToFile("junit_example_file_data.txt", "test file contents");
-         * Utils.deleteFile("index");
-         * Utils.deleteDirectory("objects");
-         */
 
         // delete all files if still around
 
-        FileUtils.deleteFile("index");
-        FileUtils.deleteDirectory("objects");
+        // FileUtils.deleteFile("index");
+        // FileUtils.deleteDirectory("objects");
+
+        // set up files to use as test
+        FileUtils.createFile(file1Name);
+        FileUtils.writeFile(file1Text, file1Name);
+
+        FileUtils.createFile(file2Name);
+        FileUtils.writeFile(file2Text, file2Name);
 
     }
 
     // clears out everything post tests
     @AfterAll
     static void tearDownAfterClass() throws Exception {
-        /*
-         * Utils.deleteFile("junit_example_file_data.txt");
-         * Utils.deleteFile("index");
-         * Utils.deleteDirectory("objects");
-         */
 
         // delete all files
-        FileUtils.deleteFile("index");
-        FileUtils.deleteDirectory("objects");
+        // FileUtils.deleteFile("index");
+        // FileUtils.deleteDirectory("objects");
 
     }
 
@@ -58,38 +67,78 @@ public class ExampleTester {
 
         // check if the file exists
         File indexFile = new File("index");
+        indexFile.createNewFile();
 
         Path objPath = Paths.get("objects");
-        File treeFile = new File("Tree");
+        File objectsFile = new File(objPath.toString());
+        objectsFile.createNewFile();
 
-        assertTrue(indexFile.exists());
-        assertTrue(Files.exists(objPath));
-        assertTrue(treeFile.exists());
+        File treeFile = new File("Tree");
+        treeFile.createNewFile();
+
+        assertTrue("index:", indexFile.exists());
+        assertTrue("obj:", Files.exists(objPath));
+        assertTrue("tree:", treeFile.exists());
     }
 
     @Test
-    @DisplayName("[15] Test if adding a blob works.  5 for sha, 5 for file contents, 5 for correct location")
-    void testCreateBlob() throws Exception {
+    @DisplayName("Test if adding a blob works")
+    void testBlob() throws Exception {
 
-        try {
-
-            // Manually create the files and folders before the 'testAddFile'
-            // MyGitProject myGitClassInstance = new MyGitProject();
-            // myGitClassInstance.init();
-
-            // TestHelper.runTestSuiteMethods("testCreateBlob", file1.getName());
-
-        } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }
+        Blob blobTest = new Blob(file1Name);
+        blobTest.add("objects");
 
         // Check blob exists in the objects folder
-        File file_junit1 = new File("objects/" + file1.methodToGetSha1());
+        File file_junit1 = new File("objects/" + blobTest.getSHA1());
         assertTrue("Blob file to add not found", file_junit1.exists());
 
-        // Read file contents
-        String indexFileContents = MyUtilityClass.readAFileToAString("objects/" + file1.methodToGetSha1());
-        assertEquals("File contents of Blob don't match file contents pre-blob creation", indexFileContents,
-                file1.getContents());
+        // check file contents
+        String indexFileContents = FileUtils.readFile(new File("objects/" + blobTest.getSHA1()));
+        assertEquals("File contents of Blob don't match file contents pre-blobcreation",
+                indexFileContents,
+                blobTest.getContents());
     }
+
+    @Test
+    @DisplayName("index add test")
+    void testIndexAdd() throws Exception {
+
+    }
+
+    @Test
+    @DisplayName("index remove test")
+    void testIndexRemove() throws Exception {
+
+    }
+
+    @Test
+    @DisplayName("tree add test")
+    void testTreeAdd() throws Exception {
+
+    }
+
+    @Test
+    @DisplayName("tree remove test")
+    void testTreeRemove() throws Exception {
+
+    }
+
+    @Test
+    @DisplayName("tree blob test")
+    void testTreeBlobGeneration() throws Exception {
+
+    }
+
+    // @Test
+    // public void Testtest() throws Exception {
+    // Path p = Paths.get("./bin");
+    // String path = p.toFile().getAbsolutePath();
+    // File f = new File(path);
+    // String[] str = f.list();
+    // String a = "";
+    // for (String b : str) {
+    // a += b + "\n";
+    // }
+    // throw new Exception(a);
+    // }
 }
