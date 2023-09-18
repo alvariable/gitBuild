@@ -60,9 +60,14 @@ public class Index {
         PrintWriter pw = new PrintWriter(file);
         Set<String> fileSet = gitMap.keySet();
 
+        int i = 0;
         for (String k : fileSet) {
+            if (i > 0)
+                pw.print("\n");
             pw.print(k);
-            pw.println(" : " + gitMap.get(k));
+            pw.print(" : " + gitMap.get(k));
+
+            i++;
 
         }
         pw.close();

@@ -51,8 +51,8 @@ public class ExampleTester {
     static void tearDownAfterClass() throws Exception {
 
         // delete all files
-        // FileUtils.deleteFile("index");
-        // FileUtils.deleteDirectory("objects");
+        FileUtils.deleteFile("index");
+        FileUtils.deleteDirectory("objects");
 
     }
 
@@ -89,11 +89,11 @@ public class ExampleTester {
         blobTest.add("objects");
 
         // Check blob exists in the objects folder
-        File file_junit1 = new File("objects/" + blobTest.getSHA1());
+        File file_junit1 = new File("objects/" + file1SHA);
         assertTrue("Blob file to add not found", file_junit1.exists());
 
         // check file contents
-        String indexFileContents = FileUtils.readFile(new File("objects/" + blobTest.getSHA1()));
+        String indexFileContents = FileUtils.readFile(new File("objects/" + file1SHA));
         assertEquals("File contents of Blob don't match file contents pre-blobcreation",
                 indexFileContents,
                 blobTest.getContents());
@@ -103,11 +103,45 @@ public class ExampleTester {
     @DisplayName("index add test")
     void testIndexAdd() throws Exception {
 
+        FileUtils.deleteFile("index");
+        FileUtils.deleteDirectory("objects");
+        indexTest.initializeProject();
+
+        String indexFileContents = FileUtils.readFile(new File("index"));
+        assertEquals("File contents of index don't match inputs", indexFileContents,
+                "");
+
+        indexTest.addBlob(file1Name);
+
+        indexTest.addBlob(file2Name);
+
+        // Check blob exists in the objects folder
+        File file_junit1 = new File("objects/" + file1SHA);
+        assertTrue("Blob not found", file_junit1.exists());
+
+        // check file contents
+        indexFileContents = FileUtils.readFile(new File("index"));
+        assertEquals("File contents of index don't match inputs", indexFileContents,
+                file1Name + " : " + file1SHA + "\n" + file2Name + " : " + file2SHA);
     }
 
     @Test
     @DisplayName("index remove test")
     void testIndexRemove() throws Exception {
+        indexTest.addBlob(file1Name);
+        indexTest.addBlob(file2Name);
+
+        // Check blob exists in the objects folder
+        File file_junit1 = new File("objects/" + file1SHA);
+        assertTrue("Blob file to add not found", file_junit1.exists());
+        File file_junit2 = new File("objects/" + file2SHA);
+        assertTrue("Blob file to add not found", file_junit2.exists());
+
+        indexTest.removeBlob(file1Name);
+
+        String indexFileContents = FileUtils.readFile(new File("index"));
+        assertEquals("File contents of index don't match inputs", indexFileContents,
+                file2Name + " : " + file2SHA);
 
     }
 
