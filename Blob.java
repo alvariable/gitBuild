@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -17,7 +19,7 @@ public class Blob {
     String fileContents;
     // HashMap<>;
 
-    public Blob(String filePathString) throws IOException, NoSuchAlgorithmException {
+    public Blob(String filePathString) throws Exception {
         originalFile = new File(filePathString);
         originalPath = filePathString;
         fileContents = readFile(originalFile);
@@ -28,19 +30,23 @@ public class Blob {
         return SHA1;
     }
 
-    public void add(String objectPath) throws FileNotFoundException {
+    public String getContents() {
+        return fileContents;
+    }
+
+    public void add(String objectPath) throws Exception {
+
+        // makes directory if no exist
+        objectPath = "./objects/";
+        Path oP = Paths.get(objectPath); // creates Path
+        if (!Files.exists(oP)) // creates file if directory doesnt exist
+            Files.createDirectories(oP); // creates Path
+
         writeFile(fileContents, objectPath + SHA1);
     }
 
-    private String createHash(String fileContents) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("SHA-1");
-        byte[] MessageDigest = md.digest(fileContents.getBytes());
-        BigInteger no = new BigInteger(1, MessageDigest);
-        String hashtext = no.toString(16);
-        while (hashtext.length() < 32) {
-            hashtext = "0" + hashtext;
-        }
-        return hashtext;
+    private String createHash(String fileContents) throws Exception {
+        return FileUtil.getHash(fileContents);
 
     }
 

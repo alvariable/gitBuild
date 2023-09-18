@@ -3,13 +3,24 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 public class Tester {
-    public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
+    public static void main(String[] args) throws Exception, IOException, NoSuchAlgorithmException {
         Index init = new Index();
         init.initializeProject();
-        init.addBlob("/Users/ardendoyle/Documents/personal/coding/Honors Topics/gitBuild/testFile.txt");
-        // init.addBlob("/Users/ardendoyle/Documents/personal/coding/Honors
-        // Topics/gitBuild/file.txt");
-        ;
-        init.removeBlob("/Users/ardendoyle/Documents/personal/coding/Honors Topics/gitBuild/file.txt");
+        init.addBlob("testFile.txt");
+        init.addBlob("file.txt");
+        Blob blob = new Blob("testFile.txt");
+        blob.add("objects");
+
+        init.removeBlob("file.txt");
+
+        Tree tree = new Tree();
+        tree.initializeTree();
+
+        tree.add("thing : 2093103821038210");
+        tree.add("thing : 2093103821038210");
+        // tree.remove("thing : 2093103821038210");
+        tree.generateBlob();
+
+        System.out.println("test done");
     }
 }

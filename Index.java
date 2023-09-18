@@ -19,12 +19,19 @@ public class Index {
         Path oP = Paths.get(objectPath); // creates Path
         if (!Files.exists(oP)) // creates file if directory doesnt exist
             Files.createDirectories(oP); // creates Path
-        Path iP = Paths.get(objectPath + "index");
-        if (!Files.exists(iP))
-            index = new File(objectPath + "index");
+
+        /**
+         * Note:
+         * index is not supposed to be inside objects folder
+         */
+        Path iP = Paths.get("index");
+        if (!Files.exists(iP)) {
+            index = new File("index");
+            index.createNewFile();
+        }
     }
 
-    public void addBlob(String filename) throws IOException, NoSuchAlgorithmException {
+    public void addBlob(String filename) throws Exception {
         // creates a blob for the given filename
         Blob b = new Blob(filename);
         String hash = b.getSHA1(); // creates hash var that stores SHA1
@@ -48,13 +55,20 @@ public class Index {
     }
 
     public void writeIndex() throws IOException {
-        FileOutputStream fos = new FileOutputStream(objectPath + "index");
-        File file = new File(objectPath + "index");
+        FileOutputStream fos = new FileOutputStream("index");
+        File file = new File("index");
         PrintWriter pw = new PrintWriter(file);
         Set<String> fileSet = gitMap.keySet();
+
+        int i = 0;
         for (String k : fileSet) {
+            if (i > 0)
+                pw.print("\n");
             pw.print(k);
-            pw.println(" : " + gitMap.get(k));
+            pw.print(" : " + gitMap.get(k));
+
+            i++;
+
         }
         pw.close();
         fos.close();
