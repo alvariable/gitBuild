@@ -38,11 +38,11 @@ public class ExampleTester {
         // FileUtils.deleteDirectory("objects");
 
         // set up files to use as test
-        FileUtils.createFile(file1Name);
-        FileUtils.writeFile(file1Text, file1Name);
+        FileUtil.createFile(file1Name);
+        FileUtil.writeFile(file1Text, file1Name);
 
-        FileUtils.createFile(file2Name);
-        FileUtils.writeFile(file2Text, file2Name);
+        FileUtil.createFile(file2Name);
+        FileUtil.writeFile(file2Text, file2Name);
 
     }
 
@@ -51,8 +51,8 @@ public class ExampleTester {
     static void tearDownAfterClass() throws Exception {
 
         // delete all files
-        FileUtils.deleteFile("index");
-        FileUtils.deleteDirectory("objects");
+        FileUtil.deleteFile("index");
+        FileUtil.deleteDirectory("objects");
 
     }
 
@@ -93,7 +93,7 @@ public class ExampleTester {
         assertTrue("Blob file to add not found", file_junit1.exists());
 
         // check file contents
-        String indexFileContents = FileUtils.readFile(new File("objects/" + file1SHA));
+        String indexFileContents = FileUtil.readFile(new File("objects/" + file1SHA));
         assertEquals("File contents of Blob don't match file contents pre-blobcreation",
                 indexFileContents,
                 blobTest.getContents());
@@ -103,11 +103,11 @@ public class ExampleTester {
     @DisplayName("index add test")
     void testIndexAdd() throws Exception {
 
-        FileUtils.deleteFile("index");
-        FileUtils.deleteDirectory("objects");
+        FileUtil.deleteFile("index");
+        FileUtil.deleteDirectory("objects");
         indexTest.initializeProject();
 
-        String indexFileContents = FileUtils.readFile(new File("index"));
+        String indexFileContents = FileUtil.readFile(new File("index"));
         assertEquals("File contents of index don't match inputs", indexFileContents,
                 "");
 
@@ -120,9 +120,9 @@ public class ExampleTester {
         assertTrue("Blob not found", file_junit1.exists());
 
         // check file contents
-        indexFileContents = FileUtils.readFile(new File("index"));
+        indexFileContents = FileUtil.readFile(new File("index"));
         assertEquals("File contents of index don't match inputs", indexFileContents,
-                file1Name + " : " + file1SHA + "\n" + file2Name + " : " + file2SHA);
+                file1Name + " : " + file1SHA + file2Name + " : " + file2SHA);
     }
 
     @Test
@@ -139,7 +139,7 @@ public class ExampleTester {
 
         indexTest.removeBlob(file1Name);
 
-        String indexFileContents = FileUtils.readFile(new File("index"));
+        String indexFileContents = FileUtil.readFile(new File("index"));
         assertEquals("File contents of index don't match inputs", indexFileContents,
                 file2Name + " : " + file2SHA);
 
@@ -149,13 +149,13 @@ public class ExampleTester {
     @DisplayName("tree add test")
     void testTreeAdd() throws Exception {
 
-        FileUtils.deleteFile("tree");
+        FileUtil.deleteFile("tree");
         treeTest.initializeTree();
 
         treeTest.add(treeInput);
         treeTest.add(treeInput2);
 
-        String treeFileContents = FileUtils.readFile(new File("Tree"));
+        String treeFileContents = FileUtil.readFile(new File("Tree"));
 
         assertEquals("File contents of tree don't match",
                 treeFileContents,
@@ -166,7 +166,7 @@ public class ExampleTester {
     @DisplayName("tree remove test")
     void testTreeRemove() throws Exception {
 
-        FileUtils.deleteFile("Tree");
+        FileUtil.deleteFile("Tree");
         treeTest.initializeTree();
 
         treeTest.add(treeInput);
@@ -174,7 +174,7 @@ public class ExampleTester {
 
         treeTest.remove(treeInput);
 
-        String treeFileContents = FileUtils.readFile(new File("Tree"));
+        String treeFileContents = FileUtil.readFile(new File("Tree"));
         assertEquals("File contents of tree don't match",
                 treeFileContents,
                 treeInput2);
@@ -184,7 +184,7 @@ public class ExampleTester {
     @DisplayName("tree blob test")
     void testTreeBlobGeneration() throws Exception {
 
-        FileUtils.deleteFile("Tree");
+        FileUtil.deleteFile("Tree");
         treeTest.initializeTree();
 
         treeTest.add(treeInput);
@@ -196,7 +196,7 @@ public class ExampleTester {
         assertTrue("Blob file to add not found", file_junit1.exists());
 
         // check file contents
-        String treeFileContents = FileUtils.readFile(new File("objects/" + treeSHA));
+        String treeFileContents = FileUtil.readFile(new File("objects/" + treeSHA));
         assertEquals("File contents of treeBlob don't match file contents",
                 treeFileContents,
                 treeInput);

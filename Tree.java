@@ -96,7 +96,7 @@ public class Tree {
         }
         bf.close();
 
-        String treeHash = FileUtils.getHash(contents.toString());
+        String treeHash = FileUtil.getHash(contents.toString());
 
         // // create new file in objects folder
         // File treeBlob = new File("./objects/", treeHash);

@@ -19,7 +19,7 @@ public class Blob {
     String fileContents;
     // HashMap<>;
 
-    public Blob(String filePathString) throws IOException, NoSuchAlgorithmException {
+    public Blob(String filePathString) throws Exception {
         originalFile = new File(filePathString);
         originalPath = filePathString;
         fileContents = readFile(originalFile);
@@ -45,15 +45,8 @@ public class Blob {
         writeFile(fileContents, objectPath + SHA1);
     }
 
-    private String createHash(String fileContents) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("SHA-1");
-        byte[] MessageDigest = md.digest(fileContents.getBytes());
-        BigInteger no = new BigInteger(1, MessageDigest);
-        String hashtext = no.toString(16);
-        while (hashtext.length() < 32) {
-            hashtext = "0" + hashtext;
-        }
-        return hashtext;
+    private String createHash(String fileContents) throws Exception {
+        return FileUtil.getHash(fileContents);
 
     }
 
