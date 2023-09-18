@@ -38,7 +38,7 @@ public class Tree {
 
         // if last no newline
 
-        FileWriter fw = new FileWriter(tree);
+        FileWriter fw = new FileWriter(tree, true);
 
         // check if file empty
         if (tree.length() == 0)
@@ -98,15 +98,18 @@ public class Tree {
 
         String treeHash = FileUtils.getHash(contents.toString());
 
-        // create new file in objects folder
-        File treeBlob = new File("./objects", treeHash);
-        treeBlob.createNewFile();
+        // // create new file in objects folder
+        // File treeBlob = new File("./objects/", treeHash);
+        // treeBlob.createNewFile();
 
-        // write into blob
-        FileWriter fw = new FileWriter(treeBlob);
-        fw.write(contents.toString());
+        // // write into blob
+        // FileWriter fw = new FileWriter(treeBlob);
+        // fw.write(contents.toString());
 
-        fw.close();
+        // fw.close();
+
+        Blob b = new Blob("Tree");
+        b.add("./objects/");
 
     }
 
