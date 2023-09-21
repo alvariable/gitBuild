@@ -1,5 +1,13 @@
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.File;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class TreeTest {
     private Index indexTest = new Index();
@@ -41,6 +49,64 @@ public class TreeTest {
         // delete all files
         FileUtil.deleteFile("index");
         FileUtil.deleteDirectory("objects");
+
+    }
+
+    @Test
+    @DisplayName("tree add test")
+    void testTreeAdd() throws Exception {
+
+        FileUtil.deleteFile("tree");
+        treeTest.initializeTree();
+
+        treeTest.add(treeInput);
+        treeTest.add(treeInput2);
+
+        String treeFileContents = FileUtil.readFile(new File("Tree"));
+
+        assertEquals("File contents of tree don't match",
+                treeFileContents,
+                treeInput + "\n" + treeInput2);
+    }
+
+    @Test
+    @DisplayName("tree remove test")
+    void testTreeRemove() throws Exception {
+
+        FileUtil.deleteFile("Tree");
+        treeTest.initializeTree();
+
+        treeTest.add(treeInput);
+        treeTest.add(treeInput2);
+
+        treeTest.remove(treeInput);
+
+        String treeFileContents = FileUtil.readFile(new File("Tree"));
+        assertEquals("File contents of tree don't match",
+                treeFileContents,
+                treeInput2);
+    }
+
+    @Test
+    @DisplayName("tree blob test")
+    void testTreeBlobGeneration() throws Exception {
+
+        FileUtil.deleteFile("Tree");
+        treeTest.initializeTree();
+
+        treeTest.add(treeInput);
+
+        treeTest.generateBlob();
+
+        // Check blob exists in the objects folder
+        File file_junit1 = new File("objects/" + treeSHA);
+        assertTrue("Blob file to add not found", file_junit1.exists());
+
+        // check file contents
+        String treeFileContents = FileUtil.readFile(new File("objects/" + treeSHA));
+        assertEquals("File contents of treeBlob don't match file contents",
+                treeFileContents,
+                treeInput);
 
     }
 

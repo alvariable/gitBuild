@@ -1,4 +1,6 @@
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -53,7 +55,7 @@ public class IndexTest {
     }
 
     @Test
-    @DisplayName("[8] Test if initialize and objects are created correctly")
+    @DisplayName("Test init")
     void testInitialize() throws Exception {
         // Run the person's code
         // TestHelper.runTestSuiteMethods("testInitialize");
@@ -75,5 +77,51 @@ public class IndexTest {
         assertTrue("index:", indexFile.exists());
         assertTrue("obj:", Files.exists(objPath));
         assertTrue("tree:", treeFile.exists());
+    }
+
+    @Test
+    @DisplayName("index add test")
+    void testIndexAdd() throws Exception {
+
+        FileUtil.deleteFile("index");
+        FileUtil.deleteDirectory("objects");
+        indexTest.initializeProject();
+
+        String indexFileContents = FileUtil.readFile(new File("index"));
+        assertEquals("File contents of index don't match inputs", indexFileContents,
+                "");
+
+        indexTest.addBlob(file1Name);
+
+        indexTest.addBlob(file2Name);
+
+        // Check blob exists in the objects folder
+        File file_junit1 = new File("objects/" + file1SHA);
+        assertTrue("Blob not found", file_junit1.exists());
+
+        // check file contents
+        indexFileContents = FileUtil.readFile(new File("index"));
+        assertEquals("File contents of index don't match inputs", indexFileContents,
+                file1Name + " : " + file1SHA + file2Name + " : " + file2SHA);
+    }
+
+    @Test
+    @DisplayName("index remove test")
+    void testIndexRemove() throws Exception {
+        indexTest.addBlob(file1Name);
+        indexTest.addBlob(file2Name);
+
+        // Check blob exists in the objects folder
+        File file_junit1 = new File("objects/" + file1SHA);
+        assertTrue("Blob file to add not found", file_junit1.exists());
+        File file_junit2 = new File("objects/" + file2SHA);
+        assertTrue("Blob file to add not found", file_junit2.exists());
+
+        indexTest.removeBlob(file1Name);
+
+        String indexFileContents = FileUtil.readFile(new File("index"));
+        assertEquals("File contents of index don't match inputs", indexFileContents,
+                file2Name + " : " + file2SHA);
+
     }
 }

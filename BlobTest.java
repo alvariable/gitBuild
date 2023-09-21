@@ -1,5 +1,13 @@
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.File;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class BlobTest {
     private Index indexTest = new Index();
@@ -42,5 +50,23 @@ public class BlobTest {
         FileUtil.deleteFile("index");
         FileUtil.deleteDirectory("objects");
 
+    }
+
+    @Test
+    @DisplayName("Test if adding a blob works")
+    void testBlob() throws Exception {
+
+        Blob blobTest = new Blob(file1Name);
+        blobTest.add("objects");
+
+        // Check blob exists in the objects folder
+        File file_junit1 = new File("objects/" + file1SHA);
+        assertTrue("Blob file to add not found", file_junit1.exists());
+
+        // check file contents
+        String indexFileContents = FileUtil.readFile(new File("objects/" + file1SHA));
+        assertEquals("File contents of Blob don't match file contents pre-blobcreation",
+                indexFileContents,
+                blobTest.getContents());
     }
 }
