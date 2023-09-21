@@ -12,6 +12,22 @@ import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
+import java.io.*;
+import java.util.zip.Deflater;
+
 public class Blob {
     private String SHA1;
     File originalFile;
@@ -20,8 +36,9 @@ public class Blob {
     // HashMap<>;
 
     public Blob(String filePathString) throws Exception {
-        originalFile = new File(filePathString);
+
         originalPath = filePathString;
+        originalFile = new File(originalPath);
         fileContents = readFile(originalFile);
         SHA1 = createHash(fileContents);
     }
@@ -37,7 +54,7 @@ public class Blob {
     public void add(String objectPath) throws Exception {
 
         // makes directory if no exist
-        objectPath = "./objects/";
+        objectPath = "/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/objects/";
         Path oP = Paths.get(objectPath); // creates Path
         if (!Files.exists(oP)) // creates file if directory doesnt exist
             Files.createDirectories(oP); // creates Path
@@ -46,11 +63,21 @@ public class Blob {
     }
 
     private String createHash(String fileContents) throws Exception {
-        return FileUtil.getHash(fileContents);
+
+        MessageDigest mDigest = MessageDigest.getInstance("SHA1");
+        byte[] result = mDigest.digest(fileContents.getBytes());
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < result.length; i++) {
+            sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
+        }
+
+        return sb.toString();
+
+        // return FileUtil.getHash(fileContents);
 
     }
 
-    private String readFile(File fileName) throws IOException {
+    static String readFile(File fileName) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(fileName));
         StringBuilder string = new StringBuilder();
         while (reader.ready()) {
