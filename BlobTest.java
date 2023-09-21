@@ -38,14 +38,18 @@ public class BlobTest {
 
         Blob blob = new Blob("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/hi.txt");
         blob.add("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/objects");
-        Path f = Paths.get("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/");
+        Path f = Paths.get("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/objects");
 
         assertEquals(Files.exists(f), true);
 
     }
 
     @Test
-    void testGetContents() {
+    void testGetContents() throws Exception {
+
+        Blob blob = new Blob("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/hi.txt");
+        String x = blob.getContents();
+        assertEquals(x, "123");
 
     }
 

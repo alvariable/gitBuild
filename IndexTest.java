@@ -14,7 +14,11 @@ public class IndexTest {
     void testAddBlob() throws Exception {
 
         Index i = new Index();
+        i.initializeProject();
+
         i.addBlob("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/hi.txt");
+
+        i.writeIndex();
 
         File file = new File("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/index");
 
@@ -22,7 +26,7 @@ public class IndexTest {
 
         String check = Blob.readFile(file);
 
-        assertEquals(check.contains("hi.txt"), true);
+        assertEquals(check.contains("hi.txt"), true); // file needs to be long path to work
 
     }
 
@@ -30,6 +34,7 @@ public class IndexTest {
     void testInitializeProject() throws IOException {
 
         Index i = new Index();
+
         i.initializeProject();
 
         File objects = new File("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/objects");
@@ -40,12 +45,53 @@ public class IndexTest {
     }
 
     @Test
-    void testRemoveBlob() {
+    void testRemoveBlob() throws Exception {
+
+        Index i = new Index();
+        i.initializeProject();
+
+        i.addBlob("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/hi.txt");
+        i.addBlob("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/testFile.txt");
+
+        i.writeIndex();
+
+        File file = new File("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/index");
+
+        Path fileIndex = Paths.get("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/index");
+
+        String check = Blob.readFile(file);
+
+        assertEquals(check.contains("hi.txt"), check.contains("testFile.txt")); // file needs to be long path to work
+        assertEquals(true, check.contains("testFile.txt"));
+
+        i.removeBlob("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/hi.txt");
+
+        check = Blob.readFile(file);
+
+        assertEquals(check.contains("hi.txt"), false); // file needs to be long path to work
+        assertEquals(true, check.contains("testFile.txt"));
 
     }
 
     @Test
-    void testWriteIndex() {
+    void testWriteIndex() throws Exception {
+
+        Index i = new Index();
+        i.initializeProject();
+
+        i.addBlob("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/hi.txt");
+        i.addBlob("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/testFile.txt");
+
+        i.writeIndex();
+
+        File file = new File("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/index");
+
+        Path fileIndex = Paths.get("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/index");
+
+        String check = Blob.readFile(file);
+
+        assertEquals(check.contains("hi.txt"), check.contains("testFile.txt")); // file needs to be long path to work
+        assertEquals(true, check.contains("testFile.txt"));
 
     }
 }

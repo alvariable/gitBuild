@@ -29,9 +29,9 @@ import java.io.*;
 import java.util.zip.Deflater;
 
 public class Blob {
-    private String SHA1;
+    public String SHA1;
     File originalFile;
-    String originalPath;
+    public String originalPath;
     String fileContents;
     // HashMap<>;
 
@@ -62,7 +62,7 @@ public class Blob {
         writeFile(fileContents, objectPath + SHA1);
     }
 
-    private String createHash(String fileContents) throws Exception {
+    public static String createHash(String fileContents) throws Exception {
 
         MessageDigest mDigest = MessageDigest.getInstance("SHA1");
         byte[] result = mDigest.digest(fileContents.getBytes());
@@ -77,7 +77,7 @@ public class Blob {
 
     }
 
-    static String readFile(File fileName) throws IOException {
+    public static String readFile(File fileName) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(fileName));
         StringBuilder string = new StringBuilder();
         while (reader.ready()) {
@@ -87,7 +87,7 @@ public class Blob {
         return string.toString();
     }
 
-    private void writeFile(String str, String path) throws FileNotFoundException {
+    public void writeFile(String str, String path) throws FileNotFoundException {
         // creates a file from file path parameter, file name = sha1
         File file = new File(path);
         PrintWriter pw = new PrintWriter(file);
