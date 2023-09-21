@@ -24,9 +24,9 @@ public class Index {
          * Note:
          * index is not supposed to be inside objects folder
          */
-        Path iP = Paths.get("index");
+        Path iP = Paths.get("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/index");
         if (!Files.exists(iP)) {
-            index = new File("index");
+            index = new File("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/index");
             index.createNewFile();
         }
     }
@@ -55,8 +55,8 @@ public class Index {
     }
 
     public void writeIndex() throws IOException {
-        FileOutputStream fos = new FileOutputStream("index");
-        File file = new File("index");
+        FileOutputStream fos = new FileOutputStream("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/index");
+        File file = new File("/Users/lilbarbar/Desktop/Honors Topics/Arden_Amazing_Git/index");
         PrintWriter pw = new PrintWriter(file);
         Set<String> fileSet = gitMap.keySet();
 
