@@ -52,9 +52,11 @@ public class Commit {
         sb.append(date + "\n");
         sb.append(summary);
         initializeCommit();
+        commit = new File(createHash(sb.toString()), commitPath);
 
         FileWriter fw = new FileWriter(commit, true);
-
+        fw.append(sb.toString());
+        fw.close();
     }
 
     private String readFile(File fileName) throws IOException {
