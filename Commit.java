@@ -1,4 +1,6 @@
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -20,7 +22,6 @@ public class Commit {
         this.author = author;
         this.summary = summary;
         createDate();
-        initializeCommit();
     }
 
     public Commit(String SHA, String author, String summary) throws Exception {
@@ -28,7 +29,6 @@ public class Commit {
         this.summary = summary;
         this.parentSHA = SHA;
         createDate();
-        initializeCommit();
     }
 
     private void initializeCommit() throws Exception {
@@ -38,11 +38,29 @@ public class Commit {
         commitPath = commit.getPath();
     }
 
-    public void write() throws IOException {
+    public void write() throws Exception {
         FileWriter fw = new FileWriter(commit, true);
 
         fw.append(treeSHA + "\n");
         fw.append(parentSHA + "\n");
+        File index = origin.getIndex();
+        String extSHA = this.createHash(this.readFile(index));
+        fw.append(extSHA + "\n");
+        fw.append(author + "\n");
+        fw.append(date + "\n");
+        fw.append(summary);
+
+        commitPath = "./objects/";
+    }
+
+    private String readFile(File fileName) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(fileName));
+        StringBuilder string = new StringBuilder();
+        while (reader.ready()) {
+            string.append((char) reader.read());
+        }
+        reader.close();
+        return string.toString();
     }
 
     public String createHash(String fileContents) throws Exception {

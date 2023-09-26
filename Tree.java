@@ -117,7 +117,7 @@ public class Tree {
         return hashName;
     }
 
-    public File index() {
+    public File getIndex() {
         return indexFile;
     }
 }
