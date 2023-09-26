@@ -114,7 +114,10 @@ public class Tree {
     }
 
     public String getHash() {
-        return hashName;
+        if (hashName != null)
+            return hashName;
+        else
+            return "";
     }
 
     public File getIndex() {

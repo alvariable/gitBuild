@@ -61,7 +61,7 @@ public class Commit {
         fw.close();
     }
 
-    private String readFile(File fileName) throws IOException {
+    public String readFile(File fileName) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(fileName));
         StringBuilder string = new StringBuilder();
         while (reader.ready()) {

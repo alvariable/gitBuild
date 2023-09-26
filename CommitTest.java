@@ -1,5 +1,8 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,10 +33,22 @@ public class CommitTest {
 
     @Test
     @DisplayName("Test Constructor")
-    void testConstructor() {
+    public void testConstructor() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date today = new Date();
         String date = formatter.format(today);
         assertEquals(date, commit.getDate());
+    }
+
+    @Test
+    @DisplayName("Test write method")
+    public void testWrite() throws Exception {
+        commit.write();
+        File ref = new File(commit.getFileName());
+        assertTrue(ref.exists());
+
+        String contents = "\n + \n + \n + Chris Weng + \n" + commit.getDate() + " \n + Test commit";
+        assertEquals(contents, commit.readFile(ref));
+
     }
 }
