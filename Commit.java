@@ -18,13 +18,13 @@ public class Commit {
     File commit;
     String commitPath;
 
-    public Commit(String author, String summary) throws Exception {
+    public Commit(String author, String summary) {
         this.author = author;
         this.summary = summary;
         createDate();
     }
 
-    public Commit(String SHA, String author, String summary) throws Exception {
+    public Commit(String SHA, String author, String summary) {
         this.author = author;
         this.summary = summary;
         this.parentSHA = SHA;
