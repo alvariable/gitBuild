@@ -116,4 +116,8 @@ public class Tree {
     public String getHash() {
         return hashName;
     }
+
+    public File index() {
+        return indexFile;
+    }
 }
