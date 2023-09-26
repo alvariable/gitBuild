@@ -113,4 +113,7 @@ public class Tree {
 
     }
 
+    public String getHash() {
+        return hashName;
+    }
 }
