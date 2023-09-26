@@ -11,6 +11,7 @@ public class Commit {
     String summary;
     String parentSHA = "";
     String date;
+    String name;
 
     Tree origin = new Tree();
     String treeSHA = origin.getHash();
@@ -52,7 +53,8 @@ public class Commit {
         sb.append(date + "\n");
         sb.append(summary);
         initializeCommit();
-        commit = new File(createHash(sb.toString()), commitPath);
+        name = createHash(sb.toString());
+        commit = new File(name, commitPath);
 
         FileWriter fw = new FileWriter(commit, true);
         fw.append(sb.toString());
@@ -82,5 +84,9 @@ public class Commit {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date today = new Date();
         date = formatter.format(today);
+    }
+
+    public String getFileName() {
+        return name;
     }
 }
