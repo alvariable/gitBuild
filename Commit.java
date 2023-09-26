@@ -35,22 +35,26 @@ public class Commit {
         if (!commit.exists()) {
             commit.createNewFile();
         }
-        commitPath = commit.getPath();
+
+        commitPath = "./objects/";
     }
 
     public void write() throws Exception {
-        FileWriter fw = new FileWriter(commit, true);
+        initializeCommit();
+        StringBuilder sb = new StringBuilder("");
 
-        fw.append(treeSHA + "\n");
-        fw.append(parentSHA + "\n");
+        sb.append(treeSHA + "\n");
+        sb.append(parentSHA + "\n");
         File index = origin.getIndex();
         String extSHA = this.createHash(this.readFile(index));
-        fw.append(extSHA + "\n");
-        fw.append(author + "\n");
-        fw.append(date + "\n");
-        fw.append(summary);
+        sb.append(extSHA + "\n");
+        sb.append(author + "\n");
+        sb.append(date + "\n");
+        sb.append(summary);
+        initializeCommit();
 
-        commitPath = "./objects/";
+        FileWriter fw = new FileWriter(commit, true);
+
     }
 
     private String readFile(File fileName) throws IOException {
