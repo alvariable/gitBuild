@@ -2,8 +2,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Tree {
+    /
 
     String indexPath = "./index";
     File indexFile = new File(indexPath);
@@ -78,7 +82,47 @@ public class Tree {
         fw.close();
     }
 
-    public void generateBlob() throws Exception { // no delete old blob
+    public String addDirectory(String directoryPath) throws Exception {
+        File directory = new File(directoryPath);
+        for (File subfile : directory.listFiles()) {
+            String fn = subfile.getName();
+            if (subfile.isDirectory()) // if subfile is a directory recursively calls itself
+            // recAddDir(directoryPath, fn);
+            {
+
+            } else { // otherwise adds subfile as blob to tree
+                     // gets file name from File
+                     //create new Blob
+                     Blob temp = new Blob(fn);
+                     String entryFormal = "blob : " + temp.getSHA1() + " : " + fn;
+                     add(entryFormal);
+                     //format the correct String
+                     //call add method 
+             //   add(fn);
+            }
+            return generateBlob();
+        }
+        // returns tree shah1
+        return null;
+    }
+
+    private void recAddDir(Tree parent, String directoryPath) {
+        Tree child = new Tree();
+        child.addDirectory(directoryPath);
+        Path path = Paths.get(directoryPath);
+        File directory = new File(directoryPath);
+        for (File subfile : directory.listFiles()) {
+            // if subfile is a directory recursively calls itself
+            // gets the directory and sets it to String
+            recAddDir(child, "");
+            // otherwise adds subfile as blob to tree
+        }
+        // parent.add(child); //child tree to parent
+        // returns tree shah1
+
+    }
+
+    public String generateBlob() throws Exception { // no delete old blob
         // String content;
         BufferedReader bf = new BufferedReader(new FileReader(tree));
         StringBuilder contents = new StringBuilder();
@@ -101,7 +145,7 @@ public class Tree {
 
         Blob b = new Blob("Tree");
         b.add("./objects/");
-
+        return treeHash;
     }
 
     public String getHash() {

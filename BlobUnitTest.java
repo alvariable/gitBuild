@@ -1,14 +1,18 @@
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class BlobTest {
+public class BlobUnitTest {
     private Index indexTest = new Index();
     private Tree treeTest = new Tree();
 
@@ -18,12 +22,8 @@ public class BlobTest {
 
     private static String file2Name = "test2.txt";
     private static String file2Text = "dsfhaidsfonfongorlgjrwlkfn";
-    private static String file2SHA = "98fa98f725d269076d1af0a978a308b6df672673";
 
-    private static String treeInput = "tree : bd1ccec139dead5ee0d8c3a0499b42a7d43ac44b";
-    private static String treeInput2 = "blob : 98fa98f725d269076d1af0a978a308b6df672673 : test2.txt";
-    private static String treeSHA = "ee8612eaba3e603c9cb58e1d26a0b95ee3477652"; // hashed from treeInput
-
+    // presumably creates files to test with
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
 
@@ -68,4 +68,17 @@ public class BlobTest {
                 indexFileContents,
                 blobTest.getContents());
     }
+
+    // @Test
+    // public void Testtest() throws Exception {
+    // Path p = Paths.get("./bin");
+    // String path = p.toFile().getAbsolutePath();
+    // File f = new File(path);
+    // String[] str = f.list();
+    // String a = "";
+    // for (String b : str) {
+    // a += b + "\n";
+    // }
+    // throw new Exception(a);
+    // }
 }
