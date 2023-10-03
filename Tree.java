@@ -2,12 +2,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Tree {
-    /
 
     String indexPath = "./index";
     File indexFile = new File(indexPath);
@@ -82,44 +80,43 @@ public class Tree {
         fw.close();
     }
 
-    public String addDirectory(String directoryPath) throws Exception {
+    public String addDirectory(String directoryPath) {
+        // empty folder
+        // if folder is empty, do NOTHING
         File directory = new File(directoryPath);
-        for (File subfile : directory.listFiles()) {
-            String fn = subfile.getName();
-            if (subfile.isDirectory()) // if subfile is a directory recursively calls itself
-            // recAddDir(directoryPath, fn);
-            {
-
-            } else { // otherwise adds subfile as blob to tree
-                     // gets file name from File
-                     //create new Blob
-                     Blob temp = new Blob(fn);
-                     String entryFormal = "blob : " + temp.getSHA1() + " : " + fn;
-                     add(entryFormal);
-                     //format the correct String
-                     //call add method 
-             //   add(fn);
-            }
-            return generateBlob();
+        File[] fileList = directory.listFiles();
+        if (fileList == null)
+            return null;
+        for (File subfile : fileList) {
+            //!isDirectory
+            //format Sting
+            //call add
         }
-        // returns tree shah1
-        return null;
+        //folder with two files
+        //folder with two files, empty folder
+        //folder with two files, folder with two files
+
     }
 
-    private void recAddDir(Tree parent, String directoryPath) {
-        Tree child = new Tree();
-        child.addDirectory(directoryPath);
-        Path path = Paths.get(directoryPath);
+    public String addDirectoryOld(String directoryPath) throws Exception {
+        //
         File directory = new File(directoryPath);
-        for (File subfile : directory.listFiles()) {
-            // if subfile is a directory recursively calls itself
-            // gets the directory and sets it to String
-            recAddDir(child, "");
-            // otherwise adds subfile as blob to tree
+        if (directory.listFiles() != null) {
+            for (File subfile : directory.listFiles()) {
+                String fn = subfile.getName();
+                if (subfile.isDirectory()) {
+                    // if subfile is a directory recursively calls itself
+                    String entryForm = "tree : " + addDirectory(fn) + " : " + fn;
+                    add(entryForm);
+                } else {
+                    Blob temp = new Blob(fn);
+                    String entryFormal = "blob : " + temp.getSHA1() + " : " + fn;
+                    add(entryFormal);
+                }
+                return generateBlob();
+            }
         }
-        // parent.add(child); //child tree to parent
-        // returns tree shah1
-
+        return FileUtil.getHash("");
     }
 
     public String generateBlob() throws Exception { // no delete old blob
@@ -130,19 +127,7 @@ public class Tree {
             contents.append((char) bf.read());
         }
         bf.close();
-
         String treeHash = FileUtil.getHash(contents.toString());
-
-        // // create new file in objects folder
-        // File treeBlob = new File("./objects/", treeHash);
-        // treeBlob.createNewFile();
-
-        // // write into blob
-        // FileWriter fw = new FileWriter(treeBlob);
-        // fw.write(contents.toString());
-
-        // fw.close();
-
         Blob b = new Blob("Tree");
         b.add("./objects/");
         return treeHash;
