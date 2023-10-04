@@ -2,6 +2,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
@@ -22,9 +25,9 @@ public class Tree {
     }
 
     public void initializeTree() throws Exception {
-        if (!tree.exists()) {
-            tree.createNewFile();
-        }
+        // if (!tree.exists()) {
+        tree.createNewFile();
+        // }
         treePath = tree.getPath();
     }
 
@@ -79,6 +82,14 @@ public class Tree {
         fw.write(text.toString()); // account for "\n" at end
 
         fw.close();
+    }
+
+    public void eraseTreeContents() throws IOException, URISyntaxException {
+        tree.delete();
+        tree.createNewFile();
+        PrintWriter pw = new PrintWriter(tree);
+        pw.print("");
+       // FileUtil.writeFile("", treePath);
     }
 
     public String addDirectory(String directoryPath) throws Exception {
@@ -143,6 +154,10 @@ public class Tree {
         Blob b = new Blob("Tree");
         b.add("./objects/");
         return treeHash;
+    }
+
+    public String getContents() throws IOException, URISyntaxException {
+        return FileUtil.readFile(tree);
     }
 
     public String getHash() {

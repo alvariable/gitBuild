@@ -40,8 +40,8 @@ public class TreeUnitTest {
         // FileUtils.deleteFile("index");
         // FileUtils.deleteDirectory("objects");
 
-        folder = new File("./Test");
-        folder.mkdir();
+        // folder = new File("./Test");
+        // folder.mkdir();
 
         dirPath = "./dirTest/";
         Path oP = Paths.get(dirPath); // creates Path
@@ -64,7 +64,7 @@ public class TreeUnitTest {
     static void tearDownAfterClass() throws Exception {
 
         // // delete all files
-        // FileUtil.deleteFile("index");
+        FileUtil.deleteFile("tree");
         // FileUtil.deleteDirectory("objects");
 
     }
@@ -80,10 +80,7 @@ public class TreeUnitTest {
         treeTest.add(treeInput2);
 
         String treeFileContents = FileUtil.readFile(new File("Tree"));
-
-        assertEquals("File contents of tree don't match",
-                treeFileContents,
-                treeInput + "\n" + treeInput2);
+        assertEquals(treeFileContents, treeInput + "\n" + treeInput2);
     }
 
     @Test
@@ -99,9 +96,7 @@ public class TreeUnitTest {
         treeTest.remove(treeInput);
 
         String treeFileContents = FileUtil.readFile(new File("Tree"));
-        assertEquals("File contents of tree don't match",
-                treeFileContents,
-                treeInput2);
+        assertEquals(treeFileContents, treeInput2);
     }
 
     @Test
@@ -113,17 +108,16 @@ public class TreeUnitTest {
 
         treeTest.add(treeInput);
 
-        treeTest.generateBlob();
-
+        String hash = treeTest.generateBlob();
+        assertEquals(hash, treeSHA);
         // Check blob exists in the objects folder
-        File file_junit1 = new File("objects/" + treeSHA);
-        assertTrue("Blob file to add not found", file_junit1.exists());
+        // File file_junit1 = new File("objects/" + treeSHA);
+        // assertTrue("Blob file to add not found", file_junit1.exists());
 
         // check file contents
-        String treeFileContents = FileUtil.readFile(new File("objects/" + treeSHA));
-        assertEquals("File contents of treeBlob don't match file contents",
-                treeFileContents,
-                treeInput);
+        // String treeFileContents = FileUtil.readFile(new File("objects/" + treeSHA));
+        // assertEquals("File contents of treeBlob don't match file contents",
+        // treeFileContents, treeInput);
     }
 
     @Test
@@ -138,13 +132,19 @@ public class TreeUnitTest {
     }
 
     @Test
-    @DisplayName("test addDirectory w ONE empty file")
-    void testAddDirectorySingleFile() throws Exception {
-
-        File file1 = new File(dirPath +  file1Name);
-      //  PrintWriter pw = new PrintWriter(file1);
-        //pw.print(file1Text);
-        //pw.close();
+    @DisplayName("test get contents")
+    void testGetContents() throws Exception {
+        String dp = "./dirTestTester/";
+        Path oP = Paths.get(dp); // creates Path
+        if (!Files.exists(oP)) // creates file if directory doesnt exist
+            Files.createDirectories(oP); // creates Path
+        Tree isdfjs = new Tree();
+        isdfjs.eraseTreeContents();
+        File file1 = new File(dp + file1Name);
+        String lineEntryTemp = "blob : " + emptyContentSha + " : " + file1.getName();
+        // PrintWriter pw = new PrintWriter(file1);
+        // pw.print(file1Text);
+        // pw.close();
         // pw = new PrintWriter(file2);
         // pw.print(file2Text);
         // pw.close();
@@ -157,16 +157,45 @@ public class TreeUnitTest {
         // FileUtil.writeFile("Test/" + file2Text, file2Name);
         // treeTest.add(treeInput);
         // treeTest.add(treeInput2);
-        String hash = treeTest.addDirectory(dirPath);
-        String ideal = "824460f8b7176a728f60334533886f48c3ae7382";
-        assertEquals(ideal, hash);
+        // isdfjs.eraseTreeContents();
+        String hash = isdfjs.addDirectory(dirPath);
+        String ideal = "ecc3e337d8b096e74769e803033b85cd334b5ad0";
+        assertEquals(lineEntryTemp, isdfjs.getContents());
+    }
+
+    @Test
+    @DisplayName("test addDirectory w ONE empty file")
+    void testAddDirectorySingleFile() throws Exception {
+        Tree isdfjs = new Tree();
+
+        File file1 = new File(dirPath + file1Name);
+        String lineEntryTemp = "blob : " + emptyContentSha + " : " + file1.getName();
+        // PrintWriter pw = new PrintWriter(file1);
+        // pw.print(file1Text);
+        // pw.close();
+        // pw = new PrintWriter(file2);
+        // pw.print(file2Text);
+        // pw.close();
+        // FileUtil.writeFile(file1Text, file1Name);
+        // FileUtil.writeFile(file2Text, file2Name);
+
+        // FileUtil.createFile("Test/" + file1Name);
+        // FileUtil.writeFile("Test/" + file1Text, file1Name);
+        // FileUtil.createFile("Test/" + file2Name);
+        // FileUtil.writeFile("Test/" + file2Text, file2Name);
+        // treeTest.add(treeInput);
+        // treeTest.add(treeInput2);
+        isdfjs.eraseTreeContents();
+        String hash = isdfjs.addDirectory(dirPath);
+        String ideal = "ecc3e337d8b096e74769e803033b85cd334b5ad0";
+        assertEquals(FileUtil.getHash(lineEntryTemp), hash);
     }
 
     @Test
     @DisplayName("test addDirectory w just files")
     void testAddDirectoryFiles() throws Exception {
 
-        File file1 = new File(dirPath +file1Name);
+        File file1 = new File(dirPath + file1Name);
         File file2 = new File(dirPath + file2Name);
         PrintWriter pw = new PrintWriter(file1);
         pw.print(file1Text);

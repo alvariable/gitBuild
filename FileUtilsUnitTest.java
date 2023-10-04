@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -34,10 +35,19 @@ public class FileUtilsUnitTest {
         FileUtil.createFile(file2Name);
         FileUtil.writeFile(file2Text, file2Name);
 
-
     }
 
     private static void AssertTrue(boolean exists) {
+    }
+
+    @Test
+    @DisplayName("test hash generation")
+    static void testGetSha() throws Exception {
+        FileUtil.createFile(file2Name);
+        FileUtil.writeFile(file2Text, file2Name);
+        Blob t = new Blob(file2Name);
+        String hash = t.getSHA1();
+        assertEquals(hash, file2SHA);
     }
 
     // clears out everything post tests
