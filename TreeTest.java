@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import Utilities.FileUtils;
 
 public class TreeTest {
     private Index indexTest = new Index();

@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.NoSuchAlgorithmException;
 
 public class Tree {
 
@@ -80,21 +81,32 @@ public class Tree {
         fw.close();
     }
 
-    public String addDirectory(String directoryPath) {
+    public String addDirectory(String directoryPath) throws Exception {
         // empty folder
         // if folder is empty, do NOTHING
         File directory = new File(directoryPath);
         File[] fileList = directory.listFiles();
         if (fileList == null)
-            return null;
+            return FileUtil.getHash("");
         for (File subfile : fileList) {
-            //!isDirectory
-            //format Sting
-            //call add
+            String entryString;
+            String fn = subfile.getName();
+            if (subfile.isDirectory()) {
+                entryString = "tree : " + addDirectory(fn) + " : " + fn;
+            } else {
+                Blob temp = new Blob(fn);
+                entryString = "blob : " + temp.getSHA1() + " : " + fn;
+            }
+            add(entryString);
+            System.out.println(entryString);
+            // !isDirectory
+            // format Sting
+            // call add
         }
-        //folder with two files
-        //folder with two files, empty folder
-        //folder with two files, folder with two files
+        return generateBlob();
+        // folder with two files
+        // folder with two files, empty folder
+        // folder with two files, folder with two files
 
     }
 
