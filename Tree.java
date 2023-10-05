@@ -19,22 +19,22 @@ public class Tree {
     String treePath;
 
     // create file for tree
-    public Tree() {
+    public Tree() throws Exception {
         tree = new File("Tree");
-
+        initializeTree();
     }
 
     public void initializeTree() throws Exception {
-        // if (!tree.exists()) {
-        tree.createNewFile();
-        // }
+        if (!tree.exists()) {
+            tree.createNewFile();
+        }
         treePath = tree.getPath();
     }
 
     public void add(String str) throws Exception { // adds this to THE TREE FILE outside objects folder
 
         // if last no newline
-
+        System.out.println("does tree exist? " + tree.exists());
         FileWriter fw = new FileWriter(tree, true);
 
         // check if file empty
@@ -89,7 +89,8 @@ public class Tree {
         tree.createNewFile();
         PrintWriter pw = new PrintWriter(tree);
         pw.print("");
-       // FileUtil.writeFile("", treePath);
+        pw.close();
+        // FileUtil.writeFile("", treePath);
     }
 
     public String addDirectory(String directoryPath) throws Exception {
@@ -97,19 +98,26 @@ public class Tree {
         // if folder is empty, do NOTHING
         File directory = new File(directoryPath);
         File[] fileList = directory.listFiles();
+        // System.out.println("length of file list: " + fileList.length);
         if (fileList == null)
             return FileUtil.getHash("");
+
         for (File subfile : fileList) {
             String entryString;
             String fn = subfile.getName();
             if (subfile.isDirectory()) {
+                System.out.println("This is a directory " + fn);
                 entryString = "tree : " + addDirectory(fn) + " : " + fn;
             } else {
+                System.out.println("This is a blob " + fn);
+
                 Blob temp = new Blob(fn);
                 entryString = "blob : " + temp.getSHA1() + " : " + fn;
             }
+            System.out.println("This is entry string: " + entryString);
             add(entryString);
             System.out.println(entryString);
+
             // !isDirectory
             // format Sting
             // call add
