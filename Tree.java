@@ -19,16 +19,17 @@ public class Tree {
     String treePath;
 
     // create file for tree
-    public Tree() throws Exception {
+    public Tree() throws IOException {
         tree = new File("Tree");
         initializeTree();
     }
 
-    public void initializeTree() throws Exception {
+    public void initializeTree() throws IOException {
         if (!tree.exists()) {
             tree.createNewFile();
         }
         treePath = tree.getPath();
+        System.out.println(treePath.toString());
     }
 
     public void add(String str) throws Exception { // adds this to THE TREE FILE outside objects folder
@@ -98,29 +99,24 @@ public class Tree {
         // if folder is empty, do NOTHING
         File directory = new File(directoryPath);
         File[] fileList = directory.listFiles();
-        // System.out.println("length of file list: " + fileList.length);
         if (fileList == null)
             return FileUtil.getHash("");
-
+        System.out.println("there are " + fileList.length + " files in this directory");
         for (File subfile : fileList) {
             String entryString;
             String fn = subfile.getName();
             if (subfile.isDirectory()) {
-                System.out.println("This is a directory " + fn);
+                // System.out.println("This is a directory " + fn);
                 entryString = "tree : " + addDirectory(fn) + " : " + fn;
             } else {
-                System.out.println("This is a blob " + fn);
+                System.out.println("This is a blob: " + fn);
 
                 Blob temp = new Blob(fn);
                 entryString = "blob : " + temp.getSHA1() + " : " + fn;
             }
             System.out.println("This is entry string: " + entryString);
             add(entryString);
-            System.out.println(entryString);
-
-            // !isDirectory
-            // format Sting
-            // call add
+            // System.out.println(entryString);
         }
         return generateBlob();
         // folder with two files

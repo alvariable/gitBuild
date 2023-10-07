@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class BlobTest {
+public class BlobTest  {
     private Index indexTest = new Index();
     private Tree treeTest = new Tree();
 

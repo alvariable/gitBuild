@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 public class TreeTest {
     private Index indexTest = new Index();
-    private Tree treeTest = new Tree();
+    private Tree treeTest;
 
     private static String file1Name = "test";
     private static String file1Text = "text";
@@ -73,7 +73,7 @@ public class TreeTest {
     @Test
     @DisplayName("tree add test")
     void testTreeAdd() throws Exception {
-
+        treeTest = new Tree();
         // FileUtils.deleteFile("tree");
         treeTest.initializeTree();
 
