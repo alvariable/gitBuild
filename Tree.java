@@ -26,7 +26,7 @@ public class Tree {
 
     public Tree(String pathName) throws IOException {
         tree = new File(pathName);
-        
+
     }
 
     public void initializeTree() throws IOException {
@@ -119,8 +119,8 @@ public class Tree {
                 entryString = "tree : " + hash + " : " + fn;
             } else {
                 System.out.println("This is a blob: " + fn);
-
-                Blob temp = new Blob(fn);
+               // Blob temp = new Blob(fn);
+                Blob temp = new Blob(directoryPath + "/" + fn);
                 entryString = "blob : " + temp.getSHA1() + " : " + fn;
             }
             System.out.println("This is entry string: " + entryString);

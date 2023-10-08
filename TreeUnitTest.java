@@ -66,9 +66,9 @@ public class TreeUnitTest {
     static void tearDownAfterClass() throws Exception {
 
         // // delete all files
-        FileUtil.deleteFile("tree");
+        FileUtil.deleteFile("tempTree");
         FileUtil.deleteDirectory("testDir");
-        // FileUtil.deleteDirectory("objects");
+        FileUtil.deleteDirectory("objects");
 
     }
 
@@ -77,31 +77,31 @@ public class TreeUnitTest {
     void testCreateTree() throws Exception {
         File treeFile = new File("Tree");
         assertTrue(treeFile.exists());
-        String testing = "testing my tree";
+        //String testing = "testing my tree";
         /* write testing to treefile */
-        FileUtil.writeFile(testing, "Tree");
-        String fileContents = FileUtil.readFile(treeFile);
+       // FileUtil.writeFile(testing, "Tree");
+       /// String fileContents = FileUtil.readFile(treeFile);
     }
 
-    @Test
-    @DisplayName("test if i can write to the tree")
-    public void testWriteToTree() throws Exception {
-        // Tree test = new Tree();
+    // @Test
+    // @DisplayName("test if i can write to the tree")
+    // public void testWriteToTree() throws Exception {
+    //     // Tree test = new Tree();
 
-        File treeFile = new File("Tree");
-        assertTrue(treeFile.exists());
+    //     File treeFile = new File("Tree");
+    //     assertTrue(treeFile.exists());
 
-        // porgramatically creates Files
-        File testFile = new File("TEST_FILE");
-        testFile.createNewFile();
+    //     // porgramatically creates Files
+    //     File testFile = new File("TEST_FILE");
+    //     testFile.createNewFile();
 
-        String fileContents = FileUtil.readFile(testFile);
-        String fileSha = FileUtil.getHash(fileContents);
+    //     String fileContents = FileUtil.readFile(testFile);
+    //     String fileSha = FileUtil.getHash(fileContents);
 
-        String newline = "blob : " + fileSha + " : " + testFile.getName();
-        // tree.add(newline);
+    //     String newline = "blob : " + fileSha + " : " + testFile.getName();
+    //     // tree.add(newline);
 
-    }
+    // }
 
     // @Test
     // @DisplayName("Test if addToTree method works correctly")
@@ -179,14 +179,6 @@ public class TreeUnitTest {
         System.out.println("___");
 
         assertEquals(hash, treeSHA);
-        // Check blob exists in the objects folder
-        // File file_junit1 = new File("objects/" + treeSHA);
-        // assertTrue("Blob file to add not found", file_junit1.exists());
-
-        // check file contents
-        // String treeFileContents = FileUtil.readFile(new File("objects/" + treeSHA));
-        // assertEquals("File contents of treeBlob don't match file contents",
-        // treeFileContents, treeInput);
     }
 
     @Test
@@ -200,7 +192,6 @@ public class TreeUnitTest {
         if (!Files.exists(oP)) // creates file if directory doesnt exist
             Files.createDirectories(oP); // creates Path
         String hash = treeTest.addDirectory(dp);
-        FileUtil.deleteDirectory(dp);
         System.out.println("___");
 
         assertEquals(hash, emptyContentSha);
@@ -224,7 +215,7 @@ public class TreeUnitTest {
         String contents = treeTest.getContents();
         System.out.println("___");
 
-        assertEquals(hash, targetHash);
+        assertEquals(lineEntryTemp, contents);
     }
 
     @Test

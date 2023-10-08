@@ -57,7 +57,6 @@ public class FileUtilsUnitTest {
         // delete all files
         FileUtil.deleteFile("index");
         FileUtil.deleteDirectory("objects");
-
     }
 
 }
