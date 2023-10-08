@@ -1,21 +1,18 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-public class CommitTest {
-    Commit commit = new Commit("Chris Weng", "Test commit");
+public class CommitUnitTest {
+    static Commit commit;
 
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
@@ -29,11 +26,17 @@ public class CommitTest {
     static void tearDownAfterClass() throws Exception {
         FileUtil.deleteFile("index");
         FileUtil.deleteDirectory("objects");
+        FileUtil.deleteFile("Tree");
+        FileUtil.deleteFile("test2.txt");
+        FileUtil.deleteFile("test");
+
     }
 
     @Test
     @DisplayName("Test Constructor")
-    public void testConstructor() {
+    public void testConstructor() throws Exception {
+        commit = new Commit("Chris Weng", "Test commit");
+
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date today = new Date();
         String date = formatter.format(today);
@@ -41,14 +44,32 @@ public class CommitTest {
     }
 
     @Test
-    @DisplayName("Test write method")
-    public void testWrite() throws Exception {
-        commit.write();
-        File ref = new File(commit.getFileName());
-        assertTrue(ref.exists());
-
-        String contents = "\n + \n + \n + Chris Weng + \n" + commit.getDate() + " \n + Test commit";
-        assertEquals(contents, commit.readFile(ref));
+    void testCreateHash() {
 
     }
+
+    @Test
+    void testGetDate() {
+
+    }
+
+    @Test
+    void testGetFileName() {
+
+    }
+
+    @Test
+    void testReadFile() {
+
+    }
+
+    @Test
+    @DisplayName("Test write method")
+    public void testWrite() throws Exception {
+        commit = new Commit("Chris Weng", "Test commit");
+        String commitContent = commit.write();
+        String idealContent = FileUtil.getHash("") + "\n\n\nChris Weng\n" + commit.getDate() + "\nTest commit";
+        assertEquals(idealContent, commitContent);
+    }
+
 }

@@ -1,12 +1,9 @@
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.File;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Scanner;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -27,8 +24,8 @@ public class TreeUnitTest {
     private static String treeInput2 = "blob : 98fa98f725d269076d1af0a978a308b6df672673 : test2.txt";
     private static String treeSHA = "ee8612eaba3e603c9cb58e1d26a0b95ee3477652"; // hashed from treeInput
     private static String emptyContentSha = "da39a3ee5e6b4b0d3255bfef95601890afd80709";
-    private static String treeSHATest = "665e866eb831bfaca69e1901a66df21c573ca4e9";
-    private static String SHAOfTreeContents = "cbf35d6d75461742452f914b2c20745f2a5fb0d7";
+   // private static String treeSHATest = "665e866eb831bfaca69e1901a66df21c573ca4e9";
+   // private static String SHAOfTreeContents = "cbf35d6d75461742452f914b2c20745f2a5fb0d7";
     static File folder;
     static String dirPath;
 
@@ -217,8 +214,8 @@ public class TreeUnitTest {
         File emptyfile = new File(dp + "/" + file1Name);
         emptyfile.createNewFile();
         String lineEntryTemp = "blob : " + emptyContentSha + " : " + emptyfile.getName();
-        String hash = treeTest.addDirectory(dp);
-        String targetHash = "824460f8b7176a728f60334533886f48c3ae7382";
+      //  String hash = treeTest.addDirectory(dp);
+      //  String targetHash = "824460f8b7176a728f60334533886f48c3ae7382";
         String contents = treeTest.getContents();
         System.out.println("___");
 
