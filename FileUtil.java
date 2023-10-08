@@ -84,17 +84,17 @@ public class FileUtil {
     }
 
     public static void deleteDirectory(String dirName) throws Exception {
-        File directory = new File(dirName);
+        File directory = new File("./" + dirName);
         File[] fileList = directory.listFiles();
         if (fileList != null)
             for (File subfile : fileList) {
                 if (subfile.isDirectory())
-                    deleteDirectory(subfile.getName());
+                    deleteDirectory(dirName + "/" + subfile.getName());
                 else
                     subfile.delete();
             }
+        directory.delete();
     }
-    
 
     public static void createFile(String fileName) throws Exception {
         File file1 = new File(fileName);

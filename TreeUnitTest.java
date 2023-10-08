@@ -69,6 +69,13 @@ public class TreeUnitTest {
         FileUtil.deleteFile("tempTree");
         FileUtil.deleteDirectory("testDir");
         FileUtil.deleteDirectory("objects");
+        FileUtil.deleteFile("Tree");
+        FileUtil.deleteDirectory("testDir");
+        FileUtil.deleteDirectory("testDir2");
+        FileUtil.deleteDirectory("testDir3");
+        FileUtil.deleteDirectory("testDir4");
+        FileUtil.deleteDirectory("testDir5");
+        FileUtil.deleteDirectory("dirTest");
 
     }
 
@@ -77,29 +84,29 @@ public class TreeUnitTest {
     void testCreateTree() throws Exception {
         File treeFile = new File("Tree");
         assertTrue(treeFile.exists());
-        //String testing = "testing my tree";
+        // String testing = "testing my tree";
         /* write testing to treefile */
-       // FileUtil.writeFile(testing, "Tree");
-       /// String fileContents = FileUtil.readFile(treeFile);
+        // FileUtil.writeFile(testing, "Tree");
+        /// String fileContents = FileUtil.readFile(treeFile);
     }
 
     // @Test
     // @DisplayName("test if i can write to the tree")
     // public void testWriteToTree() throws Exception {
-    //     // Tree test = new Tree();
+    // // Tree test = new Tree();
 
-    //     File treeFile = new File("Tree");
-    //     assertTrue(treeFile.exists());
+    // File treeFile = new File("Tree");
+    // assertTrue(treeFile.exists());
 
-    //     // porgramatically creates Files
-    //     File testFile = new File("TEST_FILE");
-    //     testFile.createNewFile();
+    // // porgramatically creates Files
+    // File testFile = new File("TEST_FILE");
+    // testFile.createNewFile();
 
-    //     String fileContents = FileUtil.readFile(testFile);
-    //     String fileSha = FileUtil.getHash(fileContents);
+    // String fileContents = FileUtil.readFile(testFile);
+    // String fileSha = FileUtil.getHash(fileContents);
 
-    //     String newline = "blob : " + fileSha + " : " + testFile.getName();
-    //     // tree.add(newline);
+    // String newline = "blob : " + fileSha + " : " + testFile.getName();
+    // // tree.add(newline);
 
     // }
 
