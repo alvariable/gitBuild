@@ -24,6 +24,11 @@ public class Tree {
         initializeTree();
     }
 
+    public Tree(String pathName) throws IOException {
+        tree = new File(pathName);
+        
+    }
+
     public void initializeTree() throws IOException {
         if (!tree.exists()) {
             tree.createNewFile();
@@ -97,17 +102,21 @@ public class Tree {
     public String addDirectory(String directoryPath) throws Exception {
         // empty folder
         // if folder is empty, do NOTHING
+        System.out.println(".");
         File directory = new File(directoryPath);
         File[] fileList = directory.listFiles();
         if (fileList == null)
             return FileUtil.getHash("");
-        System.out.println("there are " + fileList.length + " files in this directory");
+        System.out.println("there are/is " + fileList.length + " files in this directory");
         for (File subfile : fileList) {
             String entryString;
             String fn = subfile.getName();
             if (subfile.isDirectory()) {
-                // System.out.println("This is a directory " + fn);
-                entryString = "tree : " + addDirectory(fn) + " : " + fn;
+                System.out.println("This is a directory " + fn);
+                Tree temp = new Tree("tempTree");
+                temp.eraseTreeContents();
+                String hash = temp.addDirectory(directoryPath + "/" + fn);
+                entryString = "tree : " + hash + " : " + fn;
             } else {
                 System.out.println("This is a blob: " + fn);
 
@@ -173,5 +182,15 @@ public class Tree {
 
     public File getIndex() {
         return indexFile;
+    }
+
+    public String toString() {
+        try {
+            return FileUtil.readFile(tree);
+        } catch (IOException | URISyntaxException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return hashName;
     }
 }

@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 public class BlobTest  {
     private Index indexTest = new Index();
-    private Tree treeTest = new Tree();
 
     private static String file1Name = "test";
     private static String file1Text = "text";

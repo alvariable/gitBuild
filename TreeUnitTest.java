@@ -53,34 +53,40 @@ public class TreeUnitTest {
         // folderPath = folder.getAbsolutePath();
 
         // set up files to use as test
-        FileUtil.createFile(file1Name);
+        // FileUtil.createFile(file1Name);
         // FileUtil.writeFile(file1Text, file1Name);
 
-        FileUtil.createFile(file2Name);
-        FileUtil.writeFile(file2Text, file2Name);
+        // FileUtil.createFile(file2Name);
+        // FileUtil.writeFile(file2Text, file2Name);
+
+    }
+
+    // clears out everything post tests
+    @AfterAll
+    static void tearDownAfterClass() throws Exception {
+
+        // // delete all files
+        FileUtil.deleteFile("tree");
+        FileUtil.deleteDirectory("testDir");
+        // FileUtil.deleteDirectory("objects");
 
     }
 
     @Test
     @DisplayName("Testing if Tree is being created")
     void testCreateTree() throws Exception {
-        Tree newTree = new Tree();
-
         File treeFile = new File("Tree");
-
         assertTrue(treeFile.exists());
         String testing = "testing my tree";
         /* write testing to treefile */
         FileUtil.writeFile(testing, "Tree");
-
         String fileContents = FileUtil.readFile(treeFile);
-
     }
 
     @Test
     @DisplayName("test if i can write to the tree")
     public void testWriteToTree() throws Exception {
-        Tree test = new Tree();
+        // Tree test = new Tree();
 
         File treeFile = new File("Tree");
         assertTrue(treeFile.exists());
@@ -100,37 +106,31 @@ public class TreeUnitTest {
     // @Test
     // @DisplayName("Test if addToTree method works correctly")
     // void testAddToTree() throws Exception {
-    //     // Run the person's code
-    //     // Index i = new Index();
-    //     // i.initializeProject();
-    //     // Tree myTree = new Tree();
-    //     treeTest.add("tree : bd1ccec139dead5ee0d8c3a0499b42a7d43ac44b");
-    //     treeTest.add("blob : 81e0268c84067377a0a1fdfb5cc996c93f6dcf9f : file1.txt");
-    //     treeTest.generateBlob();
-    //     File checking = new File("./objects/" + FileUtil.getHash(
-    //             "blob : 81e0268c84067377a0a1fdfb5cc996c93f6dcf9f : file1.txt\ntree : bd1ccec139dead5ee0d8c3a0499b42a7d43ac44b"));
-    //     // checks to make sure Tree file has been saved to objects folder with correct
-    //     // SHA
-    //     assertTrue(checking.exists());
-    //     Scanner scanner = new Scanner(checking);
-    //     String fileContents = scanner.useDelimiter("\\A").next();
-    //     scanner.close();
+    // // Run the person's code
+    // // Index i = new Index();
+    // // i.initializeProject();
+    // // Tree myTree = new Tree();
+    // treeTest.add("tree : bd1ccec139dead5ee0d8c3a0499b42a7d43ac44b");
+    // treeTest.add("blob : 81e0268c84067377a0a1fdfb5cc996c93f6dcf9f : file1.txt");
+    // treeTest.generateBlob();
+    // File checking = new File("./objects/" + FileUtil.getHash(
+    // "blob : 81e0268c84067377a0a1fdfb5cc996c93f6dcf9f : file1.txt\ntree :
+    // bd1ccec139dead5ee0d8c3a0499b42a7d43ac44b"));
+    // // checks to make sure Tree file has been saved to objects folder with
+    // correct
+    // // SHA
+    // assertTrue(checking.exists());
+    // Scanner scanner = new Scanner(checking);
+    // String fileContents = scanner.useDelimiter("\\A").next();
+    // scanner.close();
 
-    //     // checks to make sure file contents were correctly saved to the tree file
-    //     // (tree/blob log)
-    //     assertTrue(fileContents.contains("tree : bd1ccec139dead5ee0d8c3a0499b42a7d43ac44b")
-    //             && fileContents.contains("blob : 81e0268c84067377a0a1fdfb5cc996c93f6dcf9f : file1.txt"));
+    // // checks to make sure file contents were correctly saved to the tree file
+    // // (tree/blob log)
+    // assertTrue(fileContents.contains("tree :
+    // bd1ccec139dead5ee0d8c3a0499b42a7d43ac44b")
+    // && fileContents.contains("blob : 81e0268c84067377a0a1fdfb5cc996c93f6dcf9f :
+    // file1.txt"));
     // }
-
-    // clears out everything post tests
-    @AfterAll
-    static void tearDownAfterClass() throws Exception {
-
-        // // delete all files
-        FileUtil.deleteFile("tree");
-        // FileUtil.deleteDirectory("objects");
-
-    }
 
     @Test
     @DisplayName("tree add test")
@@ -143,6 +143,8 @@ public class TreeUnitTest {
         treeTest.add(treeInput2);
 
         String treeFileContents = FileUtil.readFile(new File("Tree"));
+        System.out.println("___");
+
         assertEquals(treeFileContents, treeInput + "\n" + treeInput2);
     }
 
@@ -159,6 +161,8 @@ public class TreeUnitTest {
         treeTest.remove(treeInput);
 
         String treeFileContents = FileUtil.readFile(new File("Tree"));
+        System.out.println("___");
+
         assertEquals(treeFileContents, treeInput2);
     }
 
@@ -172,6 +176,8 @@ public class TreeUnitTest {
         treeTest.add(treeInput);
 
         String hash = treeTest.generateBlob();
+        System.out.println("___");
+
         assertEquals(hash, treeSHA);
         // Check blob exists in the objects folder
         // File file_junit1 = new File("objects/" + treeSHA);
@@ -186,197 +192,176 @@ public class TreeUnitTest {
     @Test
     @DisplayName("test addDirectory w empty directory")
     void testAddDirectoryEmpty() throws Exception {
-        // create directory
-        // Directory temp = new Directory();
-        File f = new File("Test");
-        f.mkdir();
-        treeTest.addDirectory("Test");
-        String hash = treeTest.generateBlob();
+        // treeTest = new Tree();
+        treeTest.eraseTreeContents();
+        String dp = "testDir2";
+        FileUtil.deleteDirectory(dp);
+        Path oP = Paths.get(dp); // creates Path
+        if (!Files.exists(oP)) // creates file if directory doesnt exist
+            Files.createDirectories(oP); // creates Path
+        String hash = treeTest.addDirectory(dp);
+        FileUtil.deleteDirectory(dp);
+        System.out.println("___");
+
         assertEquals(hash, emptyContentSha);
     }
-
-    // @Test
-    // @DisplayName("test addDirectory w one empty file")
-    // void testAddDirectorySingleEmptyFile() throws Exception {
-    //     String dp = "dirTestTester";
-    //     Path oP = Paths.get(dp); // creates Path
-    //     if (!Files.exists(oP)) // creates file if directory doesnt exist
-    //         Files.createDirectories(oP); // creates Path
-    //     // Tree isdfjs = new Tree();
-    //     // isdfjs.initializeTree();
-    //     // isdfjs.eraseTreeContents();
-    //     File emptyfile = new File(dp + "/" + file1Name);
-    //     emptyfile.createNewFile();
-    //     String lineEntryTemp = "blob : " + emptyContentSha + " : " + emptyfile.getName();
-    //     // isdfjs.eraseTreeContents();
-    //     String hash = treeTest.addDirectory(dp);
-    //     String ideal = "ecc3e337d8b096e74769e803033b85cd334b5ad0";
-    //     // String contents = treeTest.getContents();
-    //     assertEquals(ideal, hash);
-    //     // tests hash
-    //     // assertEquals(ideal, hash);
-    //     // dirPath = "./dirTest/";
-    //     // Path oP = Paths.get(dirPath); // creates Path
-    //     // if (!Files.exists(oP)) // creates file if directory doesnt exist
-    //     // Files.createDirectories(oP); // creates Path
-    //     // File directory = new File(dirPath);
-    //     // if (!directory.exists()) // creates file if directory doesnt exist
-    //     // directory.mkdirs(); // creates Path
-
-    //     // assertTrue(directory.exists());
-
-    //     // File emptyFile = new File(dirPath + "/emptyFile");
-
-    //     // treeTest.addDirectory(dirPath);
-    //     // String targetHash = "65c6d1eb9e22464ced06c2f6185c86736572331d";
-    //     // String treeFileContents = FileUtil.readFile(new File("Tree"));
-    //     // String myTreeHash = FileUtil.getHash(treeFileContents);
-    //     // assertEquals(targetHash, myTreeHash);
-    // }
-
-    // @Test
-    // @DisplayName("test get contents of tree after adding dir with one empty
-    // file")
-    // void testGetContentsForAddDirectorySingleEMptyFIle() throws Exception {
-    // treeTest = new Tree();
-    // File d = new File("Test");
-    // d.mkdir();
-    // File emptyFile = new File("Test/emptyFile");
-    // String targetEntryLine = "blob : da39a3ee5e6b4b0d3255bfef95601890afd80709 :
-    // emtpyFile";
-    // treeTest.addDirectory("Test");
-    // treeTest.generateBlob();
-    // String generatedEntryLine = treeTest.getContents();
-    // assertEquals(generatedEntryLine, targetEntryLine);
-    // }
 
     @Test
     @DisplayName("test get contents of tree after adding dir with one empty file.")
     void testGetContents() throws Exception {
-        String dp = "dirTestTester";
+        treeTest.eraseTreeContents();
+        String dp = "testDir2";
+        FileUtil.deleteDirectory(dp);
+        Path oP = Paths.get(dp); // creates Path
+        if (!Files.exists(oP)) // creates file if directory doesnt exist
+            Files.createDirectories(oP); // creates Path
+
+        File emptyfile = new File(dp + "/" + file1Name);
+        emptyfile.createNewFile();
+        String lineEntryTemp = "blob : " + emptyContentSha + " : " + emptyfile.getName();
+        String hash = treeTest.addDirectory(dp);
+        String targetHash = "824460f8b7176a728f60334533886f48c3ae7382";
+        String contents = treeTest.getContents();
+        System.out.println("___");
+
+        assertEquals(hash, targetHash);
+    }
+
+    @Test
+    @DisplayName("test addDirectory w ONE non empty file")
+    void testAddDirectorySingleFile() throws Exception {
+
+        // treeTest = new Tree();
+        treeTest.eraseTreeContents();
+        String dp = "testDir2";
+        FileUtil.deleteDirectory(dp);
         Path oP = Paths.get(dp); // creates Path
         if (!Files.exists(oP)) // creates file if directory doesnt exist
             Files.createDirectories(oP); // creates Path
         // Tree isdfjs = new Tree();
         // isdfjs.initializeTree();
         // isdfjs.eraseTreeContents();
-        File emptyfile = new File(dp + "/" + file1Name);
-        emptyfile.createNewFile();
-        String lineEntryTemp = "blob : " + emptyContentSha + " : " + emptyfile.getName();
+        FileUtil.createFile(dp + "/" + file1Name);
+        FileUtil.writeFile(file1Text, dp + "/" + file1Name);
+
+        // String lineEntryTemp = "blob : " + emptyContentSha + " : " +
+        // emptyfile.getName();
         // isdfjs.eraseTreeContents();
         String hash = treeTest.addDirectory(dp);
-        String ideal = "ecc3e337d8b096e74769e803033b85cd334b5ad0";
-        String contents = treeTest.getContents();
-        assertEquals(lineEntryTemp, contents);
-        // tests hash
-        // assertEquals(ideal, hash);
+        String ideal = "824460f8b7176a728f60334533886f48c3ae7382";
+        // String contents = treeTest.getContents();
+        System.out.println("___");
+        FileUtil.deleteDirectory(dp);
+        assertEquals(hash, ideal);
     }
 
     @Test
-    @DisplayName("test addDirectory w ONE empty file")
-    void testAddDirectorySingleFile() throws Exception {
-        String dp = "./dirTestTester/";
+    @DisplayName("test addDirectory with dir w/ two text files")
+    void testAddDirectoryTextFiles() throws Exception {
+        treeTest.eraseTreeContents();
+        String dp = "testDir2";
+        FileUtil.deleteDirectory(dp);// deletes directort
         Path oP = Paths.get(dp); // creates Path
         if (!Files.exists(oP)) // creates file if directory doesnt exist
             Files.createDirectories(oP); // creates Path
 
-        File emptyFile = new File(dp + "empty");
-        String lineEntryTemp = "blob : " + emptyContentSha + " : " + emptyFile.getName();
-        // PrintWriter pw = new PrintWriter(file1);
-        // pw.print("");
-        // pw.close();
-        // pw = new PrintWriter(file2);
-        // pw.print(file2Text);
-        // pw.close();
-        // FileUtil.writeFile(file1Text, file1Name);
-        // FileUtil.writeFile(file2Text, file2Name);
+        FileUtil.createFile(dp + "/" + file1Name);
+        FileUtil.writeFile(file1Text, dp + "/" + file1Name);
 
-        FileUtil.createFile("Test/" + file1Name);
-        FileUtil.writeFile("Test/" + file1Text, file1Name);
-        FileUtil.createFile("Test/" + file2Name);
-        // FileUtil.writeFile("Test/" + file2Text, file2Name);
-        // treeTest.add(treeInput);
-        // treeTest.add(treeInput2);
-        // isdfjs.eraseTreeContents();
-        // String hash = treeTest.addDirectory(dp);
-        String ideal = "27d2b1fb06d081719e37704cebe9d677b93fe964";
-        assertEquals(ideal, FileUtil.getHash(lineEntryTemp));
-        String hash = treeTest.addDirectory("Test");
+        FileUtil.createFile(dp + "/" + file2Name);
+        FileUtil.writeFile(file2Text, dp + "/" + file2Name);
+        String hash = treeTest.addDirectory(dp);
+        String idealContent = "blob : 372ea08cab33e71c02c651dbc83a474d32c676ea : test\nblob : 98fa98f725d269076d1af0a978a308b6df672673 : test2.txt";
+        String actualContent = treeTest.getContents();
+        System.out.println("___");
+        assertEquals(idealContent, actualContent);
+        String ideal = "2385cc7911a7be12b77d35b2a303b905aeb77655";
+        assertEquals(hash, ideal);
+
+    }
+
+    @Test
+    @DisplayName("test addDirectory with dir w/ empty folder")
+    void testAddDirectoryEmptyFolder() throws Exception {
+        treeTest.eraseTreeContents();
+        String dp = "testDir3";
+        FileUtil.deleteDirectory(dp);
+        Path oP = Paths.get(dp); // creates Path
+        FileUtil.deleteDirectory(dp);// deletes directort
+        if (!Files.exists(oP)) // creates file if directory doesnt exist
+            Files.createDirectories(oP); // creates Path
+        String emptyFolder = dp + "/emptyFolder";
+        oP = Paths.get(emptyFolder);
+        if (!Files.exists(oP)) // creates file if directory doesnt exist
+            Files.createDirectories(oP); // creates Path
+        String hash = treeTest.addDirectory(emptyFolder);
+        FileUtil.deleteDirectory(dp);
+        System.out.println("___");
         assertEquals(hash, emptyContentSha);
     }
 
-    // @Test
-    // @DisplayName("test addDirectory w just files")
-    // void testAddDirectoryFiles() throws Exception {
+    @Test
+    @DisplayName("test addDirectory with dir w/ one folder w/ two files")
+    void testAddDirectoryFolderWithFiles() throws Exception {
+        treeTest.eraseTreeContents();
 
-    // File file1 = new File(dirPath + file1Name);
-    // File file2 = new File(dirPath + file2Name);
-    // PrintWriter pw = new PrintWriter(file1);
-    // pw.print(file1Text);
-    // pw.close();
-    // pw = new PrintWriter(file2);
-    // pw.print(file2Text);
-    // pw.close();
-    // // FileUtil.writeFile(file1Text, file1Name);
-    // // FileUtil.writeFile(file2Text, file2Name);
+        String dp = "testDir4";
+        FileUtil.deleteDirectory(dp);// deletes directort
+        Path oP = Paths.get(dp); // creates Path
+        if (!Files.exists(oP)) // creates file if directory doesnt exist
+            Files.createDirectories(oP); // creates Path
+        dp = "dirTest/twoFileFolder";
+        FileUtil.deleteDirectory(dp);// deletes directort
+        oP = Paths.get(dp); // creates Path
+        if (!Files.exists(oP)) // creates file if directory doesnt exist
+            Files.createDirectories(oP); // creates Path
 
-    // // FileUtil.createFile("Test/" + file1Name);
-    // // FileUtil.writeFile("Test/" + file1Text, file1Name);
-    // // FileUtil.createFile("Test/" + file2Name);
-    // // FileUtil.writeFile("Test/" + file2Text, file2Name);
-    // // treeTest.add(treeInput);
-    // // treeTest.add(treeInput2);
-    // String hash = treeTest.addDirectory(dirPath);
-    // String ideal = "2385cc7911a7be12b77d35b2a303b905aeb77655";
-    // assertEquals(ideal, hash);
-    // }
+        FileUtil.createFile(dp + "/" + file1Name);
+        FileUtil.writeFile(file1Text, dp + "/" + file1Name);
 
-    // @Test
-    // @DisplayName("test addDirectory w just files")
-    // void testAddDirectoryEmptyFile() throws Exception {
+        FileUtil.createFile(dp + "/" + file2Name);
+        FileUtil.writeFile(file2Text, dp + "/" + file2Name);
+        treeTest.addDirectory("dirTest");
+        String idealContent = "tree : 2385cc7911a7be12b77d35b2a303b905aeb77655 : twoFileFolder";
+        String actualContent = treeTest.getContents();
+        System.out.println("___");
+        assertEquals(idealContent, actualContent);
+        // String ideal = "2385cc7911a7be12b77d35b2a303b905aeb77655";
+        // assertEquals(hash, ideal);
 
-    // // File file1 = new File(dirPath + file1Name);
-    // File emptyFileeee = new File(dirPath + "sarahhhhh");
-    // // FileUtil.writeFile(file1Text, file1Name);
-    // // FileUtil.writeFile(file2Text, file2Name);
+    }
 
-    // // FileUtil.createFile("Test/" + file1Name);
-    // // FileUtil.writeFile("Test/" + file1Text, file1Name);
-    // // FileUtil.createFile("Test/" + file2Name);
-    // // FileUtil.writeFile("Test/" + file2Text, file2Name);
-    // // treeTest.add(treeInput);
-    // // treeTest.add(treeInput2);
-    // treeTest.eraseTreeContents();
-    // String hash = treeTest.addDirectory(dirPath);
-    // String ideal = "24f4c1129102d85cb2b14c4d6cf6b358f8e933b9";
-    // assertEquals(ideal, hash);
+    @Test
+    @DisplayName("test addDirectory with dir w/ two files, folder w/ two files")
+    void testAddDirectoryFolderAndFiles() throws Exception {
+        treeTest.eraseTreeContents();
+        String dp = "testDir5";
+        FileUtil.deleteDirectory(dp);
+        Path oP = Paths.get(dp); // creates Path
+        FileUtil.deleteDirectory(dp);// deletes directort
+        if (!Files.exists(oP)) // creates file if directory doesnt exist
+            Files.createDirectories(oP); // creates Path
+        String twoFileFolder = dp + "/twoFileFolder";
+        FileUtil.deleteDirectory(twoFileFolder);
+        oP = Paths.get(twoFileFolder);
+        if (!Files.exists(oP)) // creates file if directory doesnt exist
+            Files.createDirectories(oP); // creates Path
 
-    // }
+        FileUtil.createFile(twoFileFolder + "/" + file1Name);
+        FileUtil.writeFile(file1Text, twoFileFolder + "/" + file1Name);
 
-    // @Test
-    // @DisplayName("test addDirectory w directory with an empty folder")
-    // void testAddDirectoryFolder() throws Exception {
-    // // create directory
-    // // Directory temp = new Directory();
-    // File f = new File("Test");
-    // f.mkdir();
-    // File emptyFolder = new File("Test/emptyFolder");
-    // emptyFolder.mkdir();
-    // String idealHash = "063f162a2402393fc74c4dc4c1a91f5b45d0debf";
-    // // String hash = treeTest.addDirectory("Test");
-    // String hash = treeTest.generateBlob();
-    // assertEquals(hash, emptyContentSha);
-    // }
-    // // @Test
-    // // public void Testtest() throws Exception {
-    // // Path p = Paths.get("./bin");
-    // // String path = p.toFile().getAbsolutePath();
-    // // File f = new File(path);
-    // // String[] str = f.list();
-    // // String a = "";
-    // // for (String b : str) {
-    // // a += b + "\n";
-    // // }
-    // // throw new Exception(a);
-    // // }
+        FileUtil.createFile(twoFileFolder + "/" + file2Name);
+        FileUtil.writeFile(file2Text, twoFileFolder + "/" + file2Name);
+        FileUtil.createFile(dp + "/" + file1Name);
+        FileUtil.writeFile(file1Text, dp + "/" + file1Name);
+
+        FileUtil.createFile(dp + "/" + file2Name);
+        FileUtil.writeFile(file2Text, dp + "/" + file2Name);
+
+        String idealContent = "blob : 372ea08cab33e71c02c651dbc83a474d32c676ea : test\nblob : 98fa98f725d269076d1af0a978a308b6df672673 : test2.txt\ntree : 2385cc7911a7be12b77d35b2a303b905aeb77655 : twoFileFolder";
+        treeTest.addDirectory(dp);
+        String treeContent = treeTest.getContents();
+        assertEquals(idealContent, treeContent);
+
+    }
 }
