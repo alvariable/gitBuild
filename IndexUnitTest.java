@@ -11,8 +11,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class IndexUnitTest {
-    private Index indexTest = new Index();
-    private Tree treeTest = new Tree();
+    static private Index indexTest = new Index();
+    static private Tree treeTest;
 
     private static String file1Name = "test";
     private static String file1Text = "text";
@@ -51,7 +51,9 @@ public class IndexUnitTest {
         // delete all files
         FileUtil.deleteFile("index");
         FileUtil.deleteDirectory("objects");
-
+        FileUtil.deleteFile("test");
+        FileUtil.deleteFile("test2.txt");
+        FileUtil.deleteFile("tree");
     }
 
     @Test
@@ -59,6 +61,7 @@ public class IndexUnitTest {
     void testInitialize() throws Exception {
         // Run the person's code
         // TestHelper.runTestSuiteMethods("testInitialize");
+        treeTest = new Tree();
 
         indexTest.initializeProject();
         treeTest.initializeTree();
@@ -88,7 +91,7 @@ public class IndexUnitTest {
         indexTest.initializeProject();
 
         String indexFileContents = FileUtil.readFile(new File("index"));
-        assertEquals("File contents of index don't match inputs", indexFileContents,
+        assertEquals( indexFileContents,
                 "");
 
         indexTest.addBlob(file1Name);
@@ -100,7 +103,7 @@ public class IndexUnitTest {
 
         // check file contents
         indexFileContents = FileUtil.readFile(new File("index"));
-        assertEquals("File contents of index don't match inputs", indexFileContents,
+        assertEquals(indexFileContents,
                 file1Name + " : " + file1SHA + file2Name + " : " + file2SHA);
     }
 
