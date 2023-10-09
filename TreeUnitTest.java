@@ -216,7 +216,7 @@ public class TreeUnitTest {
         File emptyfile = new File(dp + "/" + file1Name);
         emptyfile.createNewFile();
         String lineEntryTemp = "blob : " + emptyContentSha + " : " + emptyfile.getName();
-        String hash = treeTest.addDirectory(dp);
+        treeTest.addDirectory(dp);
         // String targetHash = "824460f8b7176a728f60334533886f48c3ae7382";
         String contents = treeTest.getContents();
         System.out.println("___");

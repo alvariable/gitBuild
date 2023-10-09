@@ -22,9 +22,9 @@ public class IndexUnitTest {
     private static String file2Text = "dsfhaidsfonfongorlgjrwlkfn";
     private static String file2SHA = "98fa98f725d269076d1af0a978a308b6df672673";
 
-    private static String treeInput = "tree : bd1ccec139dead5ee0d8c3a0499b42a7d43ac44b";
-    private static String treeInput2 = "blob : 98fa98f725d269076d1af0a978a308b6df672673 : test2.txt";
-    private static String treeSHA = "ee8612eaba3e603c9cb58e1d26a0b95ee3477652"; // hashed from treeInput
+   // private static String treeInput = "tree : bd1ccec139dead5ee0d8c3a0499b42a7d43ac44b";
+  //  private static String treeInput2 = "blob : 98fa98f725d269076d1af0a978a308b6df672673 : test2.txt";
+  //  private static String treeSHA = "ee8612eaba3e603c9cb58e1d26a0b95ee3477652"; // hashed from treeInput
 
     // presumably creates files to test with
     @BeforeAll
@@ -91,7 +91,7 @@ public class IndexUnitTest {
         indexTest.initializeProject();
 
         String indexFileContents = FileUtil.readFile(new File("index"));
-        assertEquals( indexFileContents,
+        assertEquals(indexFileContents,
                 "");
 
         indexTest.addBlob(file1Name);
@@ -103,8 +103,8 @@ public class IndexUnitTest {
 
         // check file contents
         indexFileContents = FileUtil.readFile(new File("index"));
-        assertEquals(indexFileContents,
-                file1Name + " : " + file1SHA + file2Name + " : " + file2SHA);
+        String target = file1SHA + " : " + file1Name + "\n" + file2SHA + " : " + file2Name;
+        assertEquals(target, indexFileContents);
     }
 
     @Test
@@ -115,15 +115,15 @@ public class IndexUnitTest {
 
         // Check blob exists in the objects folder
         File file_junit1 = new File("objects/" + file1SHA);
-        assertTrue("Blob file to add not found", file_junit1.exists());
+        assertTrue(file_junit1.exists());
         File file_junit2 = new File("objects/" + file2SHA);
         assertTrue("Blob file to add not found", file_junit2.exists());
 
         indexTest.removeBlob(file1Name);
+        String target = file2SHA + " : " + file2Name;
 
         String indexFileContents = FileUtil.readFile(new File("index"));
-        assertEquals("File contents of index don't match inputs", indexFileContents,
-                file2Name + " : " + file2SHA);
+        assertEquals(target, indexFileContents);
 
     }
 

@@ -63,8 +63,8 @@ public class Index {
         for (String k : fileSet) {
             if (i > 0)
                 pw.print("\n");
-            pw.print(k);
-            pw.print(" : " + gitMap.get(k));
+            pw.print(gitMap.get(k));
+            pw.print(" : " + k);
 
             i++;
 
