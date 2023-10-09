@@ -13,6 +13,7 @@ public class Blob {
     File originalFile;
     String originalPath;
     String fileContents;
+    String objectPath = "./objects/";
     // HashMap<>;
 
     public Blob(String filePathString) throws Exception {
@@ -20,6 +21,9 @@ public class Blob {
         originalPath = filePathString;
         fileContents = readFile(originalFile);
         SHA1 = createHash(fileContents);
+        Path oP = Paths.get(objectPath); // creates Path
+        if (!Files.exists(oP)) // creates file if directory doesnt exist
+            Files.createDirectories(oP); // creates Path
     }
 
     public String getSHA1() {
@@ -31,19 +35,21 @@ public class Blob {
     }
 
     public void add(String objectPath) throws Exception {
-
         // makes directory if no exist
-        objectPath = "./objects/";
+        // objectPath = "./objects/";
         Path oP = Paths.get(objectPath); // creates Path
         if (!Files.exists(oP)) // creates file if directory doesnt exist
             Files.createDirectories(oP); // creates Path
-
         writeFile(fileContents, objectPath + SHA1);
+    }
+
+    public String createBlob() throws FileNotFoundException {
+        writeFile(fileContents, objectPath + SHA1);
+        return SHA1;
     }
 
     private String createHash(String fileContents) throws Exception {
         return FileUtil.getHash(fileContents);
-
     }
 
     private String readFile(File fileName) throws IOException {
@@ -62,7 +68,5 @@ public class Blob {
         PrintWriter pw = new PrintWriter(file);
         pw.write(str);
         pw.close();
-
     }
-
 }

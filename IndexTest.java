@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 public class IndexTest {
     private Index indexTest = new Index();
-    private Tree treeTest = new Tree();
+ //   private Tree treeTest = new Tree();
 
     private static String file1Name = "test";
     private static String file1Text = "text";

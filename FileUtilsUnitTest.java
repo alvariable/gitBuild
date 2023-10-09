@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Test;
 
 public class FileUtilsUnitTest {
     private static String file1Name = "test";
-    private static String file1Text = "text";
-    private static String file1SHA = "372ea08cab33e71c02c651dbc83a474d32c676ea";
+   // private static String file1Text = "text";
+   // private static String file1SHA = "372ea08cab33e71c02c651dbc83a474d32c676ea";
 
     private static String file2Name = "test2.txt";
     private static String file2Text = "dsfhaidsfonfongorlgjrwlkfn";
