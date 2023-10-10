@@ -1,12 +1,14 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Commit {
-    String author, summary, date, name, treeSHA, prevComm;
+    String author, summary, date, name, treeSHA, prevComm, fileHash;
     String parentSHA = "";
 
     Tree origin;
@@ -37,6 +39,7 @@ public class Commit {
         createDate();
         treeSHA = createTree();
         initializeCommit();
+        addCurrentCommitToPreviousCommit();
 
     }
 
@@ -45,7 +48,7 @@ public class Commit {
         // commit.createNewFile();
         // }
         String fileContents = write();
-        String fileHash = FileUtil.getHash(fileContents);
+        fileHash = FileUtil.getHash(fileContents);
         File file = new File(commitPath + "/" + fileHash);
         if (!file.exists())
             file.createNewFile();
@@ -60,7 +63,7 @@ public class Commit {
         sb.append(parentSHA + "\n"); // 2nd line: SHA1 of a file location of prev commit (can be blank)
         // File index = origin.getIndex();
         // String extSHA = this.createHash(this.readFile(index));
-        sb.append("\n"); // 3rd line: SHA1 of a file location of ext commit (can be blank)
+        sb.append("\n"); // 3rd line: SHA1 of a file location of next commit (can be blank)
         sb.append(author + "\n");// 4th line is author
         sb.append(date + "\n");// 5th line is date
         sb.append(summary); // 6th line is summary
@@ -74,6 +77,27 @@ public class Commit {
         // fw.close();
     }
 
+    public void addCurrentCommitToPreviousCommit() throws IOException, URISyntaxException {
+        // finds previous commit file from parent hash
+        File previousCommit = new File(commitPath + "/" + parentSHA);
+        StringBuilder prevCommitContentsWithNewLine = new StringBuilder();
+        BufferedReader br = new BufferedReader(new FileReader(previousCommit));
+        int lineNumber = 0;
+        while (br.ready()) {
+            lineNumber += 1;
+            if (lineNumber > 1)
+                prevCommitContentsWithNewLine.append("\n");
+            prevCommitContentsWithNewLine.append(br.readLine());
+            if (lineNumber == 3) {
+                prevCommitContentsWithNewLine.append(fileHash);
+            }
+        }
+        FileUtil.writeFile(prevCommitContentsWithNewLine.toString(), commitPath + "/" + parentSHA);
+        br.close();
+        // reads file
+        // rewrites file with same content as before + current commit shah in third line
+    }
+
     public String readFile(File fileName) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(fileName));
         StringBuilder string = new StringBuilder();
@@ -84,9 +108,8 @@ public class Commit {
         return string.toString();
     }
 
-    public String createHash(String fileContents) throws Exception {
-        return FileUtil.getHash(fileContents);
-
+    public String getHash() throws Exception {
+        return fileHash;
     }
 
     public String getDate() {

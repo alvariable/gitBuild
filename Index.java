@@ -11,7 +11,7 @@ import java.util.Set;
 public class Index {
     File index;
     HashMap<String, String> gitMap = new HashMap<String, String>();
-    String objectPath;
+    String objectPath = "./objects/";
 
     public void initializeProject() throws IOException {
         objectPath = "./objects/";
