@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
 
-
 public class Tree {
 
     String indexPath = "./index";
@@ -117,7 +116,7 @@ public class Tree {
                 entryString = "tree : " + hash + " : " + fn;
             } else {
                 System.out.println("This is a blob: " + fn);
-               // Blob temp = new Blob(fn);
+                // Blob temp = new Blob(fn);
                 Blob temp = new Blob(directoryPath + "/" + fn);
                 entryString = "blob : " + temp.getSHA1() + " : " + fn;
             }
@@ -161,7 +160,8 @@ public class Tree {
             contents.append((char) bf.read());
         }
         bf.close();
-        String treeHash = FileUtil.getHash(contents.toString());
+        String content = FileUtil.readFile(tree);
+        String treeHash = FileUtil.getHash(content);
         Blob b = new Blob("Tree");
         b.add("./objects/");
         return treeHash;

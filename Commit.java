@@ -10,6 +10,7 @@ import java.util.Date;
 public class Commit {
     String author, summary, date, name, treeSHA, prevComm, fileHash;
     String parentSHA = "";
+    File head = new File("HEAD");
 
     Tree origin;
     // String treeSHA = origin.getHash();
@@ -24,7 +25,7 @@ public class Commit {
         this.author = author;
         this.summary = summary;
         createDate();
-        treeSHA = createTree();
+        // treeSHA = createTree();
         initializeCommit();
 
     }
@@ -37,7 +38,7 @@ public class Commit {
         this.summary = summary;
         this.parentSHA = SHA;
         createDate();
-        treeSHA = createTree();
+        // treeSHA = createTree();
         initializeCommit();
         addCurrentCommitToPreviousCommit();
 
@@ -47,12 +48,21 @@ public class Commit {
         // if (!commit.exists()) {
         // commit.createNewFile();
         // }
+        origin = new Tree();
+        treeSHA = origin.generateBlob();
         String fileContents = write();
         fileHash = FileUtil.getHash(fileContents);
         File file = new File(commitPath + "/" + fileHash);
         if (!file.exists())
             file.createNewFile();
         FileUtil.writeFile(fileContents, commitPath + "/" + fileHash);
+        updateHead();
+    }
+
+    private void updateHead() throws IOException, URISyntaxException {
+        if (!head.exists())
+            head.createNewFile();
+        FileUtil.writeFile(fileHash, "HEAD");
     }
 
     public String write() throws Exception {
