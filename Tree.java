@@ -6,6 +6,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Tree {
 
@@ -192,39 +195,43 @@ public class Tree {
         return hashName;
     }
 
-    public void checkout(String shaOfCommit) throws IOException {
+    public void checkout(String shaOfCommit) throws Exception {
         // locates the commit from sha in objects folder
-
         BufferedReader commitReader = new BufferedReader(new FileReader("objects/" + shaOfCommit));
         // goes to first line of commit file to get tree hash
         String treeHash = commitReader.readLine();
+        // closes reader
         commitReader.close();
+        // calls recreate directory with the hash of the tree
         recreateDirectory("", treeHash);
-        // locates the tree
-        // gets sha of first entry
-        // if the entry begins w "blob", get the contents of the file by locating it in
-        // the objects folder
-        // recreates the file with the name and the contents
-        // if the entry begins w "tree", calls checkout with the sha in the entryline
-        //
-
     }
 
-    private void checkoutComplete(String directoryHash) {
-
-    }
-
+    //takes in a directory path, and a hash of a tree 
     public void recreateDirectory(String directoryPrefix, String directoryHash) throws Exception {
+        // locates the tree file in objecsts folder
         File treeReferenceFile = new File("objects/" + directoryHash);
         BufferedReader treeReader = new BufferedReader(new FileReader(treeReferenceFile));
+        // reads each line of the tree file
         while (treeReader.ready()) {
-            String line = treeReader.readLine();
-            // if line begins with "tree:" ->
-            // recreateDirectory(directoryPrefix/nameofCurrentDirectory, hash)
-            // otehrwise just recreate a blob
+            // fileType, Sha, fileName
+            String[] lineParts = treeReader.readLine().split(":");
+            // creates String of intended dir path
+            String path = directoryPrefix + "/" + lineParts[2];
+            if (lineParts[0].equals("tree")) {
+                Path directory = Paths.get(path); // creates Path
+                if (!Files.exists(directory)) // creates file if directory doesnt exist
+                    Files.createDirectories(directory); // creates Path
+                recreateDirectory(path, lineParts[1]);
+            } else {
+                File recreatedFile = new File(path);
+                if (!recreatedFile.exists())
+                    recreatedFile.createNewFile();
+                File blobbedFiled = new File("objects/" + lineParts[1]); // file should exist
+                String fileContents = FileUtil.readFile(blobbedFiled);
+                FileUtil.writeFile(fileContents, path);
+            }
         }
         treeReader.close();
-        File recreatedFile = new File(directoryPrefix + "/" + directoryHash);
         // go thru each line individually, if it' a directory tehn call direcotry
         // otherwise i recreate the blob with the prefix of the directorty name
 
