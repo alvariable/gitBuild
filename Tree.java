@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -189,5 +190,47 @@ public class Tree {
             e.printStackTrace();
         }
         return hashName;
+    }
+
+    public void checkout(String shaOfCommit) throws IOException {
+        // locates the commit from sha in objects folder
+
+        BufferedReader commitReader = new BufferedReader(new FileReader("objects/" + shaOfCommit));
+        // goes to first line of commit file to get tree hash
+        String treeHash = commitReader.readLine();
+        commitReader.close();
+        recreateDirectory("", treeHash);
+        // locates the tree
+        // gets sha of first entry
+        // if the entry begins w "blob", get the contents of the file by locating it in
+        // the objects folder
+        // recreates the file with the name and the contents
+        // if the entry begins w "tree", calls checkout with the sha in the entryline
+        //
+
+    }
+
+    private void checkoutComplete(String directoryHash) {
+
+    }
+
+    public void recreateDirectory(String directoryPrefix, String directoryHash) throws Exception {
+        File treeReferenceFile = new File("objects/" + directoryHash);
+        BufferedReader treeReader = new BufferedReader(new FileReader(treeReferenceFile));
+        while (treeReader.ready()) {
+            String line = treeReader.readLine();
+            // if line begins with "tree:" ->
+            // recreateDirectory(directoryPrefix/nameofCurrentDirectory, hash)
+            // otehrwise just recreate a blob
+        }
+        treeReader.close();
+        File recreatedFile = new File(directoryPrefix + "/" + directoryHash);
+        // go thru each line individually, if it' a directory tehn call direcotry
+        // otherwise i recreate the blob with the prefix of the directorty name
+
+        // if isDirectory -> recreateDirectory(directoryPath)
+        // create new directory (directoryRrefix + "/" + directoryPath);
+        //
+
     }
 }
