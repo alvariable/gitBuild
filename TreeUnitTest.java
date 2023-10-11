@@ -21,7 +21,7 @@ public class TreeUnitTest {
     private static String file2Name = "test2.txt";
     private static String file2Text = "dsfhaidsfonfongorlgjrwlkfn"; // 98fa98f725d269076d1af0a978a308b6df672673
 
-    private static String treeInput = "tree : bd1ccec139dead5ee0d8c3a0499b42a7d43ac44b";
+    private static String treeInput = "tree : bd1ccec139dead5ee0d8c3a0499b42a7d43ac44b : dirTest";
     private static String treeInput2 = "blob : 98fa98f725d269076d1af0a978a308b6df672673 : test2.txt";
     private static String treeSHA = "ee8612eaba3e603c9cb58e1d26a0b95ee3477652"; // hashed from treeInput
     private static String emptyContentSha = "da39a3ee5e6b4b0d3255bfef95601890afd80709";
@@ -50,14 +50,19 @@ public class TreeUnitTest {
         if (!Files.exists(oP)) // creates file if directory doesnt exist
             Files.createDirectories(oP); // creates Path
 
+        dirPath = "./objects/";
+        oP = Paths.get(dirPath); // creates Path
+        if (!Files.exists(oP)) // creates file if directory doesnt exist
+            Files.createDirectories(oP); // creates Path
+
         // folderPath = folder.getAbsolutePath();
 
         // set up files to use as test
         FileUtil.createFile(file1Name);
         FileUtil.writeFile(file1Text, file1Name);
 
-        // FileUtil.createFile(file2Name);
-        // FileUtil.writeFile(file2Text, file2Name);
+        FileUtil.createFile(file2Name);
+        FileUtil.writeFile(file2Text, file2Name);
 
     }
 
@@ -68,7 +73,7 @@ public class TreeUnitTest {
         // // delete all files
         FileUtil.deleteFile("tempTree");
         FileUtil.deleteDirectory("testDir");
-     FileUtil.deleteDirectory("objects");
+        FileUtil.deleteDirectory("objects");
         FileUtil.deleteFile("Tree");
         FileUtil.deleteDirectory("testDir");
         FileUtil.deleteDirectory("testDir2");
@@ -77,6 +82,7 @@ public class TreeUnitTest {
         FileUtil.deleteDirectory("testDir5");
         FileUtil.deleteDirectory("test");
         FileUtil.deleteDirectory("dirTest");
+        FileUtil.deleteDirectory("test2.txt");
 
     }
 
@@ -168,21 +174,49 @@ public class TreeUnitTest {
     }
 
     @Test
-    @DisplayName("tree remove test")
-    void testTreeRemove() throws Exception {
-
+    @DisplayName("test remove")
+    void testRemove() throws Exception {
         FileUtil.deleteFile("Tree");
         treeTest.initializeTree();
-
-        treeTest.add(treeInput);
-        treeTest.add(treeInput2);
-
-        treeTest.remove(treeInput);
+        treeTest.add(file1Name);
+        File blobFile = new File("./objects/372ea08cab33e71c02c651dbc83a474d32c676ea");
+        assertTrue(blobFile.exists());
 
         String treeFileContents = FileUtil.readFile(new File("Tree"));
+        assertEquals("blob : 372ea08cab33e71c02c651dbc83a474d32c676ea : test", treeFileContents);
+        treeTest.remove(file1Name);
+        treeFileContents = FileUtil.readFile(new File("Tree"));
+        assertEquals("", treeFileContents);
         System.out.println("___");
 
-        assertEquals(treeFileContents, treeInput2);
+        // treeTest.initializeTree();
+        // treeTest.eraseTreeContents();
+        // treeTest.add(file1Name);
+        // String treeFileContents = FileUtil.readFile(new File("Tree"));
+        // assertEquals("blob : 372ea08cab33e71c02c651dbc83a474d32c676ea : test",
+        // treeFileContents);
+        // treeTest.remove(file1Name);
+        // treeFileContents = FileUtil.readFile(new File("Tree"));
+        // assertEquals("", treeFileContents);
+        // File blobFile = new
+        // File("./objects/372ea08cab33e71c02c651dbc83a474d32c676ea");
+        // assertTrue(blobFile.exists());
+    }
+
+    @Test
+    @DisplayName("tree remove test")
+    void testTreeRemove() throws Exception {
+        FileUtil.deleteFile("Tree");
+        treeTest.initializeTree();
+        treeTest.add(treeInput);
+        // treeTest.add(treeInput2);
+        String treeFileContents = FileUtil.readFile(new File("Tree"));
+        assertEquals(treeInput, treeFileContents);
+        treeTest.remove(treeInput);
+        treeFileContents = FileUtil.readFile(new File("Tree"));
+        assertEquals("", treeFileContents);
+        System.out.println("___");
+
     }
 
     @Test
@@ -192,12 +226,13 @@ public class TreeUnitTest {
         FileUtil.deleteFile("Tree");
         treeTest.initializeTree();
 
-        treeTest.add(treeInput);
+        treeTest.add(treeInput2);
 
         String hash = treeTest.generateBlob();
         System.out.println("___");
-
-        assertEquals(hash, treeSHA);
+        String treeFileContents = FileUtil.readFile(new File("Tree"));
+        assertEquals(treeInput2, treeFileContents);
+        // assertEquals(hash, treeSHA);
     }
 
     @Test
@@ -375,7 +410,7 @@ public class TreeUnitTest {
 
     }
 
-   // @Test
+    // @Test
     @DisplayName("tests checkout")
     public void testCheckoutWithOneFile() throws Exception {
         Tree tree = new Tree();

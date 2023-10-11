@@ -49,7 +49,7 @@ public class Tree {
             fileHash = comps[1];
         }
         String filePath = "./objects/" + fileHash;
-        File blobFile = new File(filePath);
+        File blobFile = new File(fileName);
         if (blobFile.isDirectory()) {
             addDirectory(fileName);
             if (comps.length == 2)
@@ -86,6 +86,18 @@ public class Tree {
             fw.append(entryString);
         else
             fw.append("\n" + entryString);
+
+        fw.close();
+    }
+
+    private void addToTree(String str) throws Exception {
+        FileWriter fw = new FileWriter(tree, true);
+
+        // check if file empty
+        if (tree.length() == 0)
+            fw.append(str);
+        else
+            fw.append("\n" + str);
 
         fw.close();
     }
@@ -162,7 +174,7 @@ public class Tree {
                 entryString = "blob : " + temp.getSHA1() + " : " + fn;
             }
             System.out.println("This is entry string: " + entryString);
-            add(entryString);
+            addToTree(entryString);
             // System.out.println(entryString);
         }
         return generateBlob();

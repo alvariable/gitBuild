@@ -58,7 +58,7 @@ public class CommitUnitTest {
     @AfterAll
     static void tearDownAfterClass() throws Exception {
         FileUtil.deleteFile("index");
-        FileUtil.deleteDirectory("objects");
+       // FileUtil.deleteDirectory("objects");
         FileUtil.deleteFile("Tree");
         FileUtil.deleteFile("test2.txt");
         FileUtil.deleteFile("test");
@@ -205,5 +205,20 @@ public class CommitUnitTest {
 
     }
 
-   
+    @Test
+    @DisplayName("tests four generations of commits")
+    public void testFourGens() throws Exception {
+        FileUtil.deleteDirectory("objects");
+        Tree draftIndex = new Tree();
+        draftIndex.add(file1Name);
+        //commit
+        Commit firstCommit = new Commit("Arden", "initial commit!");
+        draftIndex.add(file2Name);
+        Commit secondCommit = new Commit("Arden", "my second commit");
+        draftIndex.addDirectory("folderWithStuff");
+        draftIndex.remove(file1Name);
+        Commit thirdCommit = new Commit("Arden", "third commit");
+        draftIndex.add(file1Name);
+        Commit lastCommit = new Commit("Arden", "lastCommit");
+    }
 }

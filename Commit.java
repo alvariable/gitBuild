@@ -26,7 +26,11 @@ public class Commit {
         this.summary = summary;
         createDate();
         // treeSHA = createTree();
+        boolean isChild = checkPreviousCommit();
         initializeCommit();
+        if (isChild) {
+            addCurrentCommitToPreviousCommit();
+        }
 
     }
 
@@ -42,6 +46,15 @@ public class Commit {
         initializeCommit();
         addCurrentCommitToPreviousCommit();
 
+    }
+
+    private boolean checkPreviousCommit() throws IOException, URISyntaxException {
+        File head = new File("HEAD");
+        if (head.exists()) {
+            parentSHA = FileUtil.readFile(head);
+            return true;
+        }
+        return false;
     }
 
     private void initializeCommit() throws Exception {
