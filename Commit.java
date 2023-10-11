@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Commit {
-    String author, summary, date, name, treeSHA, prevComm, fileHash;
+    String author, summary, date, name, treeSHA, prevComm, fileHash, childSHA;
     String parentSHA = "";
     File head = new File("HEAD");
 
@@ -152,5 +152,24 @@ public class Commit {
     private String createTree() throws Exception {
         origin = new Tree();
         return origin.generateBlob();
+    }
+
+    public String getParentSha() {
+        return parentSHA;
+    }
+
+    public String getChildSha() throws Exception {
+        if (childSHA == null)
+            findChildSha();
+        return childSHA;
+    }
+
+    private void findChildSha() throws Exception {
+        BufferedReader br = new BufferedReader(new FileReader("./objects/" + fileHash));
+        br.readLine();
+        br.readLine();
+        childSHA = br.readLine();
+        br.close();
+
     }
 }

@@ -20,7 +20,7 @@ public class Tree {
     String treePath;
 
     // create file for tree
-    public Tree() throws IOException {
+    public Tree() throws IOException, URISyntaxException {
         tree = new File("Tree");
         initializeTree();
     }
@@ -30,10 +30,11 @@ public class Tree {
 
     }
 
-    public void initializeTree() throws IOException {
+    public void initializeTree() throws IOException, URISyntaxException {
         if (!tree.exists()) {
             tree.createNewFile();
         }
+        FileUtil.deleteFile("HEAD");
         treePath = tree.getPath();
         System.out.println(treePath.toString());
     }

@@ -58,7 +58,7 @@ public class CommitUnitTest {
     @AfterAll
     static void tearDownAfterClass() throws Exception {
         FileUtil.deleteFile("index");
-       // FileUtil.deleteDirectory("objects");
+        FileUtil.deleteDirectory("objects");
         FileUtil.deleteFile("Tree");
         FileUtil.deleteFile("test2.txt");
         FileUtil.deleteFile("test");
@@ -208,10 +208,10 @@ public class CommitUnitTest {
     @Test
     @DisplayName("tests four generations of commits")
     public void testFourGens() throws Exception {
-        FileUtil.deleteDirectory("objects");
+        // FileUtil.deleteDirectory("objects");
         Tree draftIndex = new Tree();
         draftIndex.add(file1Name);
-        //commit
+        // commit
         Commit firstCommit = new Commit("Arden", "initial commit!");
         draftIndex.add(file2Name);
         Commit secondCommit = new Commit("Arden", "my second commit");
@@ -220,5 +220,19 @@ public class CommitUnitTest {
         Commit thirdCommit = new Commit("Arden", "third commit");
         draftIndex.add(file1Name);
         Commit lastCommit = new Commit("Arden", "lastCommit");
+        // checks first commit, parent sha = null
+        assertEquals(firstCommit.getParentSha(), "");
+        assertEquals(firstCommit.getHash(), secondCommit.getParentSha());
+
+        assertEquals(firstCommit.getChildSha(), secondCommit.getHash(), thirdCommit.getParentSha());
+        assertEquals(secondCommit.getChildSha(), thirdCommit.getHash(), lastCommit.getParentSha());
+
+        assertEquals(thirdCommit.getChildSha(), lastCommit.getHash());
+        assertEquals(lastCommit.getChildSha(), "");
+
+        // checks parent sha of second commit, checks child sha of second commit
+        // checks parent sha of third commit, checks child sha of second third
+        // checks last commit parent sha, child sha = null
+
     }
 }
