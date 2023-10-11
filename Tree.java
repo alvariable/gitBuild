@@ -38,7 +38,44 @@ public class Tree {
         System.out.println(treePath.toString());
     }
 
+    private String createBlobFromEntryString(String entryString) throws Exception {
+        String comps[] = entryString.split(" : ");
+        String fileName, fileHash;
+        if (comps.length == 2) {
+            fileName = comps[1];
+            fileHash = comps[0];
+        } else {
+            fileName = comps[2];
+            fileHash = comps[1];
+        }
+        String filePath = "./objects/" + fileHash;
+        File blobFile = new File(filePath);
+        if (blobFile.isDirectory()) {
+            addDirectory(fileName);
+            if (comps.length == 2)
+                return "tree : " + entryString;
+            return entryString;
+        }
+        if (!blobFile.exists()) {
+            FileUtil.createFile(filePath);
+            String contents = FileUtil.readFile2(fileName);
+            FileUtil.writeFile(contents, filePath);
+        }
+        // if file exists, assume it contains the appropriate contents
+        if (comps.length == 2)
+            return "blob : " + entryString;
+        return entryString;
+    }
+
     public void add(String str) throws Exception { // adds this to THE TREE FILE outside objects folder
+        File tempFile = new File(str);
+        String entryString;
+        if (tempFile.exists()) {
+            Blob temp = new Blob(str);
+            temp.createBlob();
+            entryString = "blob : " + temp.getSHA1() + " : " + str;
+        } else
+            entryString = createBlobFromEntryString(str);
 
         // if last no newline
         System.out.println("does tree exist? " + tree.exists());
@@ -46,9 +83,9 @@ public class Tree {
 
         // check if file empty
         if (tree.length() == 0)
-            fw.append(str);
+            fw.append(entryString);
         else
-            fw.append("\n" + str);
+            fw.append("\n" + entryString);
 
         fw.close();
     }
@@ -195,7 +232,7 @@ public class Tree {
         return hashName;
     }
 
-    public void checkout(String shaOfCommit) throws Exception {
+    public String checkout(String shaOfCommit) throws Exception {
         // locates the commit from sha in objects folder
         BufferedReader commitReader = new BufferedReader(new FileReader("objects/" + shaOfCommit));
         // goes to first line of commit file to get tree hash
@@ -204,9 +241,10 @@ public class Tree {
         commitReader.close();
         // calls recreate directory with the hash of the tree
         recreateDirectory("", treeHash);
+        return treeHash;
     }
 
-    //takes in a directory path, and a hash of a tree 
+    // takes in a directory path, and a hash of a tree
     public void recreateDirectory(String directoryPrefix, String directoryHash) throws Exception {
         // locates the tree file in objecsts folder
         File treeReferenceFile = new File("objects/" + directoryHash);
@@ -214,7 +252,7 @@ public class Tree {
         // reads each line of the tree file
         while (treeReader.ready()) {
             // fileType, Sha, fileName
-            String[] lineParts = treeReader.readLine().split(":");
+            String[] lineParts = treeReader.readLine().split(" : ");
             // creates String of intended dir path
             String path = directoryPrefix + "/" + lineParts[2];
             if (lineParts[0].equals("tree")) {
@@ -223,11 +261,14 @@ public class Tree {
                     Files.createDirectories(directory); // creates Path
                 recreateDirectory(path, lineParts[1]);
             } else {
-                File recreatedFile = new File(path);
+                File recreatedFile = new File("./" + path);
                 if (!recreatedFile.exists())
-                    recreatedFile.createNewFile();
-                File blobbedFiled = new File("objects/" + lineParts[1]); // file should exist
-                String fileContents = FileUtil.readFile(blobbedFiled);
+                    FileUtil.createFile("./" + path);
+                recreatedFile.setWritable(true);
+
+                // recreatedFile.createNewFile();
+                File blobbedFiled = new File("./objects/" + lineParts[1]); // file should exist
+                String fileContents = FileUtil.readFile2("./objects/" + lineParts[1]);
                 FileUtil.writeFile(fileContents, path);
             }
         }

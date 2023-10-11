@@ -1,6 +1,7 @@
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -52,8 +53,8 @@ public class TreeUnitTest {
         // folderPath = folder.getAbsolutePath();
 
         // set up files to use as test
-        // FileUtil.createFile(file1Name);
-        // FileUtil.writeFile(file1Text, file1Name);
+        FileUtil.createFile(file1Name);
+        FileUtil.writeFile(file1Text, file1Name);
 
         // FileUtil.createFile(file2Name);
         // FileUtil.writeFile(file2Text, file2Name);
@@ -67,13 +68,14 @@ public class TreeUnitTest {
         // // delete all files
         FileUtil.deleteFile("tempTree");
         FileUtil.deleteDirectory("testDir");
-        FileUtil.deleteDirectory("objects");
+     FileUtil.deleteDirectory("objects");
         FileUtil.deleteFile("Tree");
         FileUtil.deleteDirectory("testDir");
         FileUtil.deleteDirectory("testDir2");
         FileUtil.deleteDirectory("testDir3");
         FileUtil.deleteDirectory("testDir4");
         FileUtil.deleteDirectory("testDir5");
+        FileUtil.deleteDirectory("test");
         FileUtil.deleteDirectory("dirTest");
 
     }
@@ -152,6 +154,17 @@ public class TreeUnitTest {
         System.out.println("___");
 
         assertEquals(treeFileContents, treeInput + "\n" + treeInput2);
+    }
+
+    @Test
+    @DisplayName("test add method with just a file name")
+    void testAddByFileName() throws Exception {
+        treeTest.initializeTree();
+        treeTest.eraseTreeContents();
+        treeTest.add(file1Name);
+        String treeFileContents = FileUtil.readFile(new File("Tree"));
+        assertEquals("blob : 372ea08cab33e71c02c651dbc83a474d32c676ea : test", treeFileContents);
+
     }
 
     @Test
@@ -359,6 +372,29 @@ public class TreeUnitTest {
         treeTest.addDirectory(dp);
         String treeContent = treeTest.getContents();
         assertEquals(idealContent, treeContent);
+
+    }
+
+   // @Test
+    @DisplayName("tests checkout")
+    public void testCheckoutWithOneFile() throws Exception {
+        Tree tree = new Tree();
+        tree.eraseTreeContents();
+        FileUtil.createFile("file1name");
+        FileUtil.writeFile(file1Text, "file1Name");
+        File file1 = new File("file1Name");
+        assert (file1.exists());
+        tree.add("file1Name");
+        // System.out.println(FileUtil.readFile2("Tree"));
+        Commit firstSave = new Commit("Arden", "first commit!!");
+        FileUtil.deleteFile("file1Name");
+        String commitSha = firstSave.getHash();
+        String targetHash = "824460f8b7176a728f60334533886f48c3ae7382";
+        File blob = new File("objects/372ea08cab33e71c02c651dbc83a474d32c676ea");
+        assertTrue(blob.exists());
+        String hashFromCommit = tree.checkout(commitSha);
+        assertEquals(targetHash, hashFromCommit);
+        ; // finds blob from sha
 
     }
 }
